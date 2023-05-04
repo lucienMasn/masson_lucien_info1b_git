@@ -33,7 +33,7 @@ def films_genres_afficher(id_film_sel):
         try:
             with DBconnection() as mc_afficher:
                 strsql_genres_films_afficher_data = """SELECT id_film, nom_film, duree_film, description_film, cover_link_film, date_sortie_film,
-                                                            GROUP_CONCAT(intitule_genre) as GenresFilms FROM t_genre_film
+                                                            GROUP_CONCAT(nom_pers) as GenresFilms FROM t_genre_film
                                                             RIGHT JOIN t_film ON t_film.id_film = t_genre_film.fk_film
                                                             LEFT JOIN t_genre ON t_genre.id_genre = t_genre_film.fk_genre
                                                             GROUP BY id_film"""
@@ -93,7 +93,7 @@ def edit_genre_film_selected():
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_afficher = """SELECT id_genre, intitule_genre FROM t_genre ORDER BY id_genre ASC"""
+                strsql_genres_afficher = """SELECT id_genre, nom_pers FROM t_genre ORDER BY id_genre ASC"""
                 mc_afficher.execute(strsql_genres_afficher)
             data_genres_all = mc_afficher.fetchall()
             print("dans edit_genre_film_selected ---> data_genres_all", data_genres_all)
@@ -145,9 +145,9 @@ def edit_genre_film_selected():
             print(" data_genres_films_attribues ", data_genres_films_attribues, "type ",
                   type(data_genres_films_attribues))
 
-            # Extrait les valeurs contenues dans la table "t_genres", colonne "intitule_genre"
+            # Extrait les valeurs contenues dans la table "t_genres", colonne "nom_pers"
             # Le composant javascript "tagify" pour afficher les tags n'a pas besoin de l'id_genre
-            lst_data_genres_films_non_attribues = [item['intitule_genre'] for item in data_genres_films_non_attribues]
+            lst_data_genres_films_non_attribues = [item['nom_pers'] for item in data_genres_films_non_attribues]
             print("lst_all_genres gf_edit_genre_film_selected ", lst_data_genres_films_non_attribues,
                   type(lst_data_genres_films_non_attribues))
 
@@ -281,12 +281,12 @@ def genres_films_afficher_data(valeur_id_film_selected_dict):
                                         INNER JOIN t_genre ON t_genre.id_genre = t_genre_film.fk_genre
                                         WHERE id_film = %(value_id_film_selected)s"""
 
-        strsql_genres_films_non_attribues = """SELECT id_genre, intitule_genre FROM t_genre WHERE id_genre not in(SELECT id_genre as idGenresFilms FROM t_genre_film
+        strsql_genres_films_non_attribues = """SELECT id_genre, nom_pers FROM t_genre WHERE id_genre not in(SELECT id_genre as idGenresFilms FROM t_genre_film
                                                     INNER JOIN t_film ON t_film.id_film = t_genre_film.fk_film
                                                     INNER JOIN t_genre ON t_genre.id_genre = t_genre_film.fk_genre
                                                     WHERE id_film = %(value_id_film_selected)s)"""
 
-        strsql_genres_films_attribues = """SELECT id_film, id_genre, intitule_genre FROM t_genre_film
+        strsql_genres_films_attribues = """SELECT id_film, id_genre, nom_pers FROM t_genre_film
                                             INNER JOIN t_film ON t_film.id_film = t_genre_film.fk_film
                                             INNER JOIN t_genre ON t_genre.id_genre = t_genre_film.fk_genre
                                             WHERE id_film = %(value_id_film_selected)s"""
