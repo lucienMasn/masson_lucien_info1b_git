@@ -17,7 +17,7 @@ from APP_FILMS_164.films.gestion_films_wtf_forms import FormWTFUpdateFilm, FormW
 Auteur : OM 2022.04.11
 Définition d'une "route" /film_add
 
-Test : exemple: cliquer sur le menu "Films/Genres" puis cliquer sur le bouton "ADD" d'un "film"
+Test : exemple: cliquer sur le menu "Films/Archers" puis cliquer sur le bouton "ADD" d'un "film"
 
 Paramètres : sans
 
@@ -62,7 +62,7 @@ def film_add_wtf():
 Auteur : OM 2022.04.11
 Définition d'une "route" /film_update
 
-Test : exemple: cliquer sur le menu "Films/Genres" puis cliquer sur le bouton "EDIT" d'un "film"
+Test : exemple: cliquer sur le menu "Films/Archers" puis cliquer sur le bouton "EDIT" d'un "film"
 
 Paramètres : sans
 

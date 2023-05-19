@@ -34,7 +34,7 @@ def genres_afficher(order_by, id_genre_sel):
         try:
             with DBconnection() as mc_afficher:
                 if order_by == "ASC" and id_genre_sel == 0:
-                    strsql_genres_afficher = """SELECT id_personne, nom_pers FROM t_personne"""
+                    strsql_genres_afficher = """SELECT id_personne, nom_pers, prenom_pers FROM t_personne"""
                     mc_afficher.execute(strsql_genres_afficher)
                 elif order_by == "ASC":
                     # C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
@@ -43,11 +43,11 @@ def genres_afficher(order_by, id_genre_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_id_genre_selected_dictionnaire = {"value_id_genre_selected": id_genre_sel}
-                    strsql_genres_afficher = """SELECT id_personne, nom_pers FROM t_personne = %(value_id_genre_selected)s"""
+                    strsql_genres_afficher = """SELECT id_personne, nom_pers, prenom_pers FROM t_personne = %(value_id_genre_selected)s"""
 
                     mc_afficher.execute(strsql_genres_afficher, valeur_id_genre_selected_dictionnaire)
                 else:
-                    strsql_genres_afficher = """SELECT id_personne, nom_pers FROM t_personne"""
+                    strsql_genres_afficher = """SELECT id_personne, nom_pers, prenom_pers FROM t_personne"""
 
                     mc_afficher.execute(strsql_genres_afficher)
 
@@ -64,7 +64,7 @@ def genres_afficher(order_by, id_genre_sel):
                 else:
                     # Dans tous les autres cas, c'est que la table "t_genre" est vide.
                     # OM 2020.04.09 La ligne ci-dessous permet de donner un sentiment rassurant aux utilisateurs.
-                    flash(f"Données genres affichés !!", "success")
+                    flash(f"Membres des archers de la Saigne", "success")
 
         except Exception as Exception_genres_afficher:
             raise ExceptionGenresAfficher(f"fichier : {Path(__file__).name}  ;  "
@@ -156,18 +156,18 @@ def genre_update_wtf():
         if form_update.validate_on_submit():
             # Récupèrer la valeur du champ depuis "genre_update_wtf.html" après avoir cliqué sur "SUBMIT".
             # Puis la convertir en lettres minuscules.
-            nom_pers_update_essaie = form_update.nom_pers_update_wtf.data
-            prenom_pers_update_essaie = form_update.prenom_pers_update_wtf.data
+            nom_pers_update = form_update.nom_pers_update_wtf.data
+            prenom_pers_update = form_update.prenom_pers_update_wtf.data
 
             #name_genre_update = name_genre_update.lower()
 
-            valeur_update_dictionnaire = {"value_id_genre": id_genre_update,
-                                          "value_nom_pers_update_essaie": nom_pers_update_essaie,
-                                          "value_prenom_pers_update_essaie": prenom_pers_update_essaie
+            valeur_update_dictionnaire = {"value_id_personne": id_genre_update,
+                                          "value_nom_pers_update": nom_pers_update,
+                                          "value_prenom_pers_update": prenom_pers_update
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_intitulegenre = """UPDATE `t_personne` SET `nom_pers`=%(value_prenom_pers_update_essaie), `prenom_personne`='moulina' WHERE  `id_personne`=2;"""
+            str_sql_update_intitulegenre = """UPDATE t_personne SET nom_pers=%(value_nom_pers_update)s, prenom_pers=%(value_prenom_pers_update)s WHERE id_personne=%(value_id_personne)s"""
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
 
@@ -179,7 +179,7 @@ def genre_update_wtf():
             return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=id_genre_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "nom_pers" de la "t_genre"
-            str_sql_id_genre = "SELECT id_personne, nom_pers FROM t_personne " \
+            str_sql_id_genre = "SELECT * FROM t_personne " \
                                "WHERE id_personne = %(value_id_genre)s"
             valeur_select_dictionnaire = {"value_id_genre": id_genre_update}
             with DBconnection() as mybd_conn:
@@ -190,8 +190,8 @@ def genre_update_wtf():
                   data_nom_genre["nom_pers"])
 
             # Afficher la valeur sélectionnée dans les champs du formulaire "genre_update_wtf.html"
-            form_update.nom_genre_update_wtf.data = data_nom_genre["nom_pers"]
-            form_update.prenom_pers_update_wtf.data = data_nom_genre["prenom_client"]
+            form_update.nom_pers_update_wtf.data = data_nom_genre["nom_pers"]
+            form_update.prenom_pers_update_wtf.data = data_nom_genre["prenom_pers"]
            ## form_update.date_genre_wtf_essai.data = data_nom_genre["date_ins_genre"]
 
     except Exception as Exception_genre_update_wtf:

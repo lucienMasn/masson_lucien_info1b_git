@@ -44,12 +44,12 @@ class MonPremierWTForm(FlaskForm):
 
 
 class DemoFormSelectWTF(FlaskForm):
-    genres_dropdown_wtf = SelectField('Genres (liste déroulante)',
+    genres_dropdown_wtf = SelectField('Archers (liste déroulante)',
                                       validators=[DataRequired(message="Sélectionner un genre.")],
                                       validate_choice=False
                                       )
     # Alternative qui correspond aux lignes en commentaires lignes 88 et 89 du "gestion_wtf_forms_demo_select.py"
-    # genres_dropdown_wtf = SelectField('Genres (liste déroulante)',
+    # genres_dropdown_wtf = SelectField('Archers (liste déroulante)',
     #                                   validators=[DataRequired(message="Sélectionner un genre.")],
     #                                   validate_choice=False,
     #                                   coerce=int
