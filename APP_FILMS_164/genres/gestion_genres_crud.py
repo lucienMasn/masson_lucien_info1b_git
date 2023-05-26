@@ -96,7 +96,7 @@ def genres_afficher(order_by, id_genre_sel):
 
 
 @app.route("/genres_ajouter", methods=['GET', 'POST'])
-def genres_ajouter_wtf():
+def genre_ajouter_wtf():
     form = FormWTFAjouterGenres()
     if request.method == "POST":
         try:
@@ -118,7 +118,7 @@ def genres_ajouter_wtf():
 
         except Exception as Exception_genres_ajouter_wtf:
             raise ExceptionGenresAjouterWtf(f"fichier : {Path(__file__).name}  ;  "
-                                            f"{genres_ajouter_wtf.__name__} ; "
+                                            f"{resultats_ajouter_wtf.__name__} ; "
                                             f"{Exception_genres_ajouter_wtf}")
 
     return render_template("genres/resultats_ajouter_wtf.html", form=form)
@@ -196,7 +196,7 @@ def genre_update_wtf():
 
     except Exception as Exception_genre_update_wtf:
         raise ExceptionGenreUpdateWtf(f"fichier : {Path(__file__).name}  ;  "
-                                      f"{genre_update_wtf.__name__} ; "
+                                      f"{resultats_update_wtf.__name__} ; "
                                       f"{Exception_genre_update_wtf}")
 
     return render_template("genres/resultats_update_wtf.html", form_update=form_update)
@@ -300,7 +300,7 @@ def genre_delete_wtf():
 
     except Exception as Exception_genre_delete_wtf:
         raise ExceptionGenreDeleteWtf(f"fichier : {Path(__file__).name}  ;  "
-                                      f"{genre_delete_wtf.__name__} ; "
+                                      f"{resultats_delete_wtf.__name__} ; "
                                       f"{Exception_genre_delete_wtf}")
 
     return render_template("genres/resultats_delete_wtf.html",

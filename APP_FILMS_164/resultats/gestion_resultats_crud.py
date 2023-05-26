@@ -18,9 +18,9 @@ from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFUpdateGenre
 
 """
     Auteur : OM 2021.03.16
-    Définition d'une "route" /genres_afficher   
+    Définition d'une "route" /resultats_afficher   
     
-    Test : ex : http://127.0.0.1:5575/genres_afficher
+    Test : ex : http://127.0.0.1:5575/resultats_afficher
     
     Paramètres : order_by : ASC : Ascendant, DESC : Descendant
                 id_genre_sel = 0 >> tous les genres.
@@ -28,8 +28,8 @@ from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFUpdateGenre
 """
 
 
-@app.route("/genres_afficher/<string:order_by>/<int:id_genre_sel>", methods=['GET', 'POST'])
-def genres_afficher(order_by, id_genre_sel):
+@app.route("/resultats_afficher/<string:order_by>/<int:id_genre_sel>", methods=['GET', 'POST'])
+def resultats_afficher(order_by, id_genre_sel):
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
@@ -68,7 +68,7 @@ def genres_afficher(order_by, id_genre_sel):
 
         except Exception as Exception_genres_afficher:
             raise ExceptionGenresAfficher(f"fichier : {Path(__file__).name}  ;  "
-                                          f"{genres_afficher.__name__} ; "
+                                          f"{resultats_afficher.__name__} ; "
                                           f"{Exception_genres_afficher}")
 
     # Envoie la page "HTML" au serveur.
@@ -96,7 +96,7 @@ def genres_afficher(order_by, id_genre_sel):
 
 
 @app.route("/genres_ajouter", methods=['GET', 'POST'])
-def genres_ajouter_wtf():
+def resultats_ajouter_wtf():
     form = FormWTFAjouterGenres()
     if request.method == "POST":
         try:
@@ -114,11 +114,11 @@ def genres_ajouter_wtf():
                 print(f"Données insérées !!")
 
                 # Pour afficher et constater l'insertion de la valeur, on affiche en ordre inverse. (DESC)
-                return redirect(url_for('genres_afficher', order_by='DESC', id_genre_sel=0))
+                return redirect(url_for('resultats_afficher', order_by='DESC', id_genre_sel=0))
 
         except Exception as Exception_genres_ajouter_wtf:
             raise ExceptionGenresAjouterWtf(f"fichier : {Path(__file__).name}  ;  "
-                                            f"{genres_ajouter_wtf.__name__} ; "
+                                            f"{resultats_ajouter_wtf.__name__} ; "
                                             f"{Exception_genres_ajouter_wtf}")
 
     return render_template("genres/resultats_ajouter_wtf.html", form=form)
@@ -145,7 +145,7 @@ def genres_ajouter_wtf():
 
 
 @app.route("/genre_update", methods=['GET', 'POST'])
-def genre_update_wtf():
+def resultats_update_wtf():
     # L'utilisateur vient de cliquer sur le bouton "EDIT". Récupère la valeur de "id_genre"
     id_genre_update = request.values['id_genre_btn_edit_html']
 
@@ -176,7 +176,7 @@ def genre_update_wtf():
 
             # afficher et constater que la donnée est mise à jour.
             # Affiche seulement la valeur modifiée, "ASC" et l'"id_genre_update"
-            return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=id_genre_update))
+            return redirect(url_for('resultats_afficher', order_by="ASC", id_genre_sel=id_genre_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "nom_pers" de la "t_genre"
             str_sql_id_genre = "SELECT * FROM t_personne " \
@@ -196,7 +196,7 @@ def genre_update_wtf():
 
     except Exception as Exception_genre_update_wtf:
         raise ExceptionGenreUpdateWtf(f"fichier : {Path(__file__).name}  ;  "
-                                      f"{genre_update_wtf.__name__} ; "
+                                      f"{resultats_update_wtf.__name__} ; "
                                       f"{Exception_genre_update_wtf}")
 
     return render_template("genres/resultats_update_wtf.html", form_update=form_update)
@@ -218,7 +218,7 @@ def genre_update_wtf():
 
 
 @app.route("/genre_delete", methods=['GET', 'POST'])
-def genre_delete_wtf():
+def resultats_delete_wtf():
     data_films_attribue_genre_delete = None
     btn_submit_del = None
     # L'utilisateur vient de cliquer sur le bouton "DELETE". Récupère la valeur de "id_genre"
@@ -231,7 +231,7 @@ def genre_delete_wtf():
         if request.method == "POST" and form_delete.validate_on_submit():
 
             if form_delete.submit_btn_annuler.data:
-                return redirect(url_for("genres_afficher", order_by="ASC", id_genre_sel=0))
+                return redirect(url_for("resultats_afficher", order_by="ASC", id_genre_sel=0))
 
             if form_delete.submit_btn_conf_del.data:
                 # Récupère les données afin d'afficher à nouveau
@@ -260,7 +260,7 @@ def genre_delete_wtf():
                 print(f"Genre définitivement effacé !!")
 
                 # afficher les données
-                return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=0))
+                return redirect(url_for('resultats_afficher', order_by="ASC", id_genre_sel=0))
 
         if request.method == "GET":
             valeur_select_dictionnaire = {"value_id_genre": id_genre_delete}
@@ -300,7 +300,7 @@ def genre_delete_wtf():
 
     except Exception as Exception_genre_delete_wtf:
         raise ExceptionGenreDeleteWtf(f"fichier : {Path(__file__).name}  ;  "
-                                      f"{genre_delete_wtf.__name__} ; "
+                                      f"{resultats_delete_wtf.__name__} ; "
                                       f"{Exception_genre_delete_wtf}")
 
     return render_template("genres/resultats_delete_wtf.html",
