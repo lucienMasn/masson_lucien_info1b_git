@@ -34,7 +34,9 @@ def resultats_afficher(order_by, id_genre_sel):
         try:
             with DBconnection() as mc_afficher:
                 if order_by == "ASC" and id_genre_sel == 0:
-                    strsql_genres_afficher = """SELECT id_personne, nom_pers, prenom_pers FROM t_personne"""
+                    strsql_genres_afficher = """SELECT id_personne, nom_pers, resultat_tournoi, date_tournoi,nom_tournoi, discipline_tournoi  FROM t_personne p
+                                                    INNER JOIN t_pers_participer_tournoi pt ON p.id_personne = pt.fk_personne
+                                                    INNER JOIN t_tournoi t ON pt.fk_tournoi = t.id_tournoi"""
                     mc_afficher.execute(strsql_genres_afficher)
                 elif order_by == "ASC":
                     # C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
@@ -43,11 +45,15 @@ def resultats_afficher(order_by, id_genre_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_id_genre_selected_dictionnaire = {"value_id_genre_selected": id_genre_sel}
-                    strsql_genres_afficher = """SELECT id_personne, nom_pers, prenom_pers FROM t_personne = %(value_id_genre_selected)s"""
+                    strsql_genres_afficher = """SELECT id_personne, nom_pers, resultat_tournoi, date_tournoi,nom_tournoi, discipline_tournoi  FROM t_personne p
+                                                INNER JOIN t_pers_participer_tournoi pt ON p.id_personne = pt.fk_personne
+                                                INNER JOIN t_tournoi t ON pt.fk_tournoi = t.id_tournoi  = %(value_id_genre_selected)s"""
 
                     mc_afficher.execute(strsql_genres_afficher, valeur_id_genre_selected_dictionnaire)
                 else:
-                    strsql_genres_afficher = """SELECT id_personne, nom_pers, prenom_pers FROM t_personne"""
+                    strsql_genres_afficher = """SELECT id_personne, nom_pers, resultat_tournoi, date_tournoi,nom_tournoi, discipline_tournoi  FROM t_personne p
+                                                INNER JOIN t_pers_participer_tournoi pt ON p.id_personne = pt.fk_personne
+                                                INNER JOIN t_tournoi t ON pt.fk_tournoi = t.id_tournoi"""
 
                     mc_afficher.execute(strsql_genres_afficher)
 
@@ -72,7 +78,7 @@ def resultats_afficher(order_by, id_genre_sel):
                                           f"{Exception_genres_afficher}")
 
     # Envoie la page "HTML" au serveur.
-    return render_template("genres/resultats_afficher.html", data=data_genres)
+    return render_template("resultats/resultats_afficher.html", data=data_genres)
 
 
 """
@@ -95,18 +101,18 @@ def resultats_afficher(order_by, id_genre_sel):
 """
 
 
-@app.route("/genres_ajouter", methods=['GET', 'POST'])
+@app.route("/resultats_ajouter", methods=['GET', 'POST'])
 def resultats_ajouter_wtf():
     form = FormWTFAjouterGenres()
     if request.method == "POST":
         try:
             if form.validate_on_submit():
-                name_genre_wtf = form.nom_genre_wtf.data
-                name_genre = name_genre_wtf.lower()
+                resultat_wtf = form.nom_genre_wtf.data
+                name_genre = resultat_wtf.lower()
                 valeurs_insertion_dictionnaire = {"value_nom_pers": name_genre}
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_genre = """INSERT INTO t_personne (id_personne,nom_pers) VALUES (NULL,%(value_nom_pers)s) """
+                strsql_insert_genre = """INSERT INTO t_pers_participer_tournoi (fk_personne, fk_tournoi, resultat_tournoi) VALUES (NULL,%(value_nom_pers)s) """
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(strsql_insert_genre, valeurs_insertion_dictionnaire)
 
@@ -121,7 +127,7 @@ def resultats_ajouter_wtf():
                                             f"{resultats_ajouter_wtf.__name__} ; "
                                             f"{Exception_genres_ajouter_wtf}")
 
-    return render_template("genres/resultats_ajouter_wtf.html", form=form)
+    return render_template("resultats/resultats_ajouter_wtf.html", form=form)
 
 
 """
@@ -199,7 +205,7 @@ def resultats_update_wtf():
                                       f"{resultats_update_wtf.__name__} ; "
                                       f"{Exception_genre_update_wtf}")
 
-    return render_template("genres/resultats_update_wtf.html", form_update=form_update)
+    return render_template("resultats/resultats_update_wtf.html", form_update=form_update)
 
 
 """
@@ -303,7 +309,7 @@ def resultats_delete_wtf():
                                       f"{resultats_delete_wtf.__name__} ; "
                                       f"{Exception_genre_delete_wtf}")
 
-    return render_template("genres/resultats_delete_wtf.html",
+    return render_template("resultats/resultats_delete_wtf.html",
                            form_delete=form_delete,
                            btn_submit_del=btn_submit_del,
                            data_films_associes=data_films_attribue_genre_delete)

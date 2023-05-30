@@ -34,7 +34,7 @@ def genres_afficher(order_by, id_genre_sel):
         try:
             with DBconnection() as mc_afficher:
                 if order_by == "ASC" and id_genre_sel == 0:
-                    strsql_genres_afficher = """SELECT id_personne, nom_pers, prenom_pers FROM t_personne"""
+                    strsql_genres_afficher = """SELECT * FROM t_personne"""
                     mc_afficher.execute(strsql_genres_afficher)
                 elif order_by == "ASC":
                     # C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
@@ -43,11 +43,11 @@ def genres_afficher(order_by, id_genre_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_id_genre_selected_dictionnaire = {"value_id_genre_selected": id_genre_sel}
-                    strsql_genres_afficher = """SELECT id_personne, nom_pers, prenom_pers FROM t_personne = %(value_id_genre_selected)s"""
+                    strsql_genres_afficher = """SELECT * FROM t_personne = %(value_id_genre_selected)s"""
 
                     mc_afficher.execute(strsql_genres_afficher, valeur_id_genre_selected_dictionnaire)
                 else:
-                    strsql_genres_afficher = """SELECT id_personne, nom_pers, prenom_pers FROM t_personne"""
+                    strsql_genres_afficher = """SELECT * FROM t_personne"""
 
                     mc_afficher.execute(strsql_genres_afficher)
 
@@ -72,7 +72,7 @@ def genres_afficher(order_by, id_genre_sel):
                                           f"{Exception_genres_afficher}")
 
     # Envoie la page "HTML" au serveur.
-    return render_template("genres/resultats_afficher.html", data=data_genres)
+    return render_template("genres/genre_afficher.html", data=data_genres)
 
 
 """
@@ -118,10 +118,10 @@ def genre_ajouter_wtf():
 
         except Exception as Exception_genres_ajouter_wtf:
             raise ExceptionGenresAjouterWtf(f"fichier : {Path(__file__).name}  ;  "
-                                            f"{resultats_ajouter_wtf.__name__} ; "
+                                            f"{genre_ajouter_wtf.__name__} ; "
                                             f"{Exception_genres_ajouter_wtf}")
 
-    return render_template("genres/resultats_ajouter_wtf.html", form=form)
+    return render_template("genres/genre_ajouter_wtf.html", form=form)
 
 
 """
@@ -196,10 +196,10 @@ def genre_update_wtf():
 
     except Exception as Exception_genre_update_wtf:
         raise ExceptionGenreUpdateWtf(f"fichier : {Path(__file__).name}  ;  "
-                                      f"{resultats_update_wtf.__name__} ; "
+                                      f"{genre_update_wtf.__name__} ; "
                                       f"{Exception_genre_update_wtf}")
 
-    return render_template("genres/resultats_update_wtf.html", form_update=form_update)
+    return render_template("genres/genre_update_wtf.html", form_update=form_update)
 
 
 """
@@ -300,10 +300,10 @@ def genre_delete_wtf():
 
     except Exception as Exception_genre_delete_wtf:
         raise ExceptionGenreDeleteWtf(f"fichier : {Path(__file__).name}  ;  "
-                                      f"{resultats_delete_wtf.__name__} ; "
+                                      f"{genre_delete_wtf.__name__} ; "
                                       f"{Exception_genre_delete_wtf}")
 
-    return render_template("genres/resultats_delete_wtf.html",
+    return render_template("genres/genre_delete_wtf.html",
                            form_delete=form_delete,
                            btn_submit_del=btn_submit_del,
                            data_films_associes=data_films_attribue_genre_delete)
