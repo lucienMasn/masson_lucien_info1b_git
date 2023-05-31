@@ -34,7 +34,7 @@ def genres_afficher(order_by, id_genre_sel):
         try:
             with DBconnection() as mc_afficher:
                 if order_by == "ASC" and id_genre_sel == 0:
-                    strsql_genres_afficher = """SELECT * FROM t_personne"""
+                    strsql_genres_afficher = """SELECT * FROM t_personne ORDER BY id_personne ASC"""
                     mc_afficher.execute(strsql_genres_afficher)
                 elif order_by == "ASC":
                     # C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
@@ -43,11 +43,11 @@ def genres_afficher(order_by, id_genre_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_id_genre_selected_dictionnaire = {"value_id_genre_selected": id_genre_sel}
-                    strsql_genres_afficher = """SELECT * FROM t_personne = %(value_id_genre_selected)s"""
+                    strsql_genres_afficher = """SELECT * FROM t_personne WHERE id_personne = %(value_id_genre_selected)s"""
 
                     mc_afficher.execute(strsql_genres_afficher, valeur_id_genre_selected_dictionnaire)
                 else:
-                    strsql_genres_afficher = """SELECT * FROM t_personne"""
+                    strsql_genres_afficher = """SELECT * FROM t_personne ORDER BY id_personne DESC"""
 
                     mc_afficher.execute(strsql_genres_afficher)
 
@@ -72,7 +72,7 @@ def genres_afficher(order_by, id_genre_sel):
                                           f"{Exception_genres_afficher}")
 
     # Envoie la page "HTML" au serveur.
-    return render_template("genres/genre_afficher.html", data=data_genres)
+    return render_template("genres/genres_afficher.html", data=data_genres)
 
 
 """
@@ -121,7 +121,7 @@ def genre_ajouter_wtf():
                                             f"{genre_ajouter_wtf.__name__} ; "
                                             f"{Exception_genres_ajouter_wtf}")
 
-    return render_template("genres/genre_ajouter_wtf.html", form=form)
+    return render_template("genres/genres_ajouter_wtf.html", form=form)
 
 
 """
@@ -158,7 +158,6 @@ def genre_update_wtf():
             # Puis la convertir en lettres minuscules.
             nom_pers_update = form_update.nom_pers_update_wtf.data
             prenom_pers_update = form_update.prenom_pers_update_wtf.data
-
             #name_genre_update = name_genre_update.lower()
 
             valeur_update_dictionnaire = {"value_id_personne": id_genre_update,
@@ -167,7 +166,8 @@ def genre_update_wtf():
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_intitulegenre = """UPDATE t_personne SET nom_pers=%(value_nom_pers_update)s, prenom_pers=%(value_prenom_pers_update)s WHERE id_personne=%(value_id_personne)s"""
+            str_sql_update_intitulegenre = """UPDATE t_personne SET nom_pers=%(value_nom_pers_update)s, prenom_pers=%(value_prenom_pers_update)s 
+            WHERE id_personne=%(value_id_personne)s"""
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
 
@@ -248,7 +248,7 @@ def genre_delete_wtf():
                 valeur_delete_dictionnaire = {"value_id_genre": id_genre_delete}
                 print("valeur_delete_dictionnaire ", valeur_delete_dictionnaire)
 
-                str_sql_delete_films_genre = """DELETE FROM t_genre_film WHERE fk_genre = %(value_id_genre)s"""
+                str_sql_delete_films_genre = """DELETE FROM t_contact WHERE fk_personne = %(value_id_genre)s"""
                 str_sql_delete_idgenre = """DELETE FROM t_personne WHERE id_personne = %(value_id_genre)s"""
                 # Manière brutale d'effacer d'abord la "fk_genre", même si elle n'existe pas dans la "t_genre_film"
                 # Ensuite on peut effacer le genre vu qu'il n'est plus "lié" (INNODB) dans la "t_genre_film"
