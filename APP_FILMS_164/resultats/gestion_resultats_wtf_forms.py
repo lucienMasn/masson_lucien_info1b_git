@@ -8,21 +8,37 @@ from wtforms import StringField, DateField
 from wtforms import SubmitField
 from wtforms.validators import Length, InputRequired, DataRequired
 from wtforms.validators import Regexp
+import re
 
 
-class FormWTFAjouterGenres(FlaskForm):
+class FormWTFAjouterResultats(FlaskForm):
     """
         Dans le formulaire "resultats_ajouter_wtf.html" on impose que le champ soit rempli.
         Définition d'un "bouton" submit avec un libellé personnalisé.
     """
-    nom_genre_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
-    resultat_wtf = StringField("Insérer le résultats ", validators=[Length(min=1, max=20, message="min 2 max 20"),
+    nom_genre_regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ0-9][A-Za-zÀ-ÖØ-öø-ÿ\s'\-]*[A-Za-zÀ-ÖØ-öø-ÿ0-9]$"
+    resultat_wtf = StringField("Insérer le résultats ", validators=[Length(min=1, max=20, message="min 1 max 20"),
                                                                    Regexp(nom_genre_regexp,
-                                                                          message="Pas de chiffres, de caractères "
+                                                                          message="Pas de caractères "
                                                                                   "spéciaux, "
                                                                                   "d'espace à double, de double "
                                                                                   "apostrophe, de double trait union")
                                                                  ])
+
+    personne_wtf = StringField("Insérer le fk du membre ", validators=[Length(min=1, max=20, message="min 1 max 20"),
+                                                                   Regexp(nom_genre_regexp,
+                                                                          message="Pas de caractères "
+                                                                                  "spéciaux, "
+                                                                                  "d'espace à double, de double "
+                                                                                  "apostrophe, de double trait union")
+                                                                 ])
+    tournoi_wtf = StringField("Insérer le fk du tournoi ", validators=[Length(min=1, max=20, message="min 1 max 20"),
+                                                                          Regexp(nom_genre_regexp,
+                                                                                 message="Pas de    caractères "
+                                                                                         "spéciaux, "
+                                                                                         "d'espace à double, de double "
+                                                                                         "apostrophe, de double trait union")
+                                                                          ])
     submit = SubmitField("Enregistrer resultats")
 
 

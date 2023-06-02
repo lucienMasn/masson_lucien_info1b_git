@@ -15,6 +15,7 @@ from APP_FILMS_164.erreurs.exceptions import *
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFAjouterGenres
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFDeleteGenre
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFUpdateGenre
+from APP_FILMS_164.resultats.gestion_resultats_wtf_forms import FormWTFAjouterResultats
 
 """
     Auteur : OM 2021.03.16
@@ -103,16 +104,25 @@ def resultats_afficher(order_by, id_genre_sel):
 
 @app.route("/resultats_ajouter", methods=['GET', 'POST'])
 def resultats_ajouter_wtf():
-    form = FormWTFAjouterGenres()
+    form = FormWTFAjouterResultats()
     if request.method == "POST":
         try:
             if form.validate_on_submit():
-                resultat_wtf = form.nom_genre_wtf.data
-                name_genre = resultat_wtf.lower()
-                valeurs_insertion_dictionnaire = {"value_nom_pers": name_genre}
+                resultat_wtf = form.resultat_wtf.data
+                personne_wtf = form.personne_wtf.data
+                tournoi_wtf = form.tournoi_wtf.data
+
+                valeurs_insertion_dictionnaire = {
+                    "value_tournoi": tournoi_wtf,
+                    "value_personne": personne_wtf,
+                    "value_resultat": resultat_wtf
+                }
+
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_genre = """INSERT INTO t_pers_participer_tournoi (fk_personne, fk_tournoi, resultat_tournoi) VALUES (NULL,%(value_nom_pers)s) """
+                strsql_insert_genre = """
+                INSERT INTO t_pers_participer_tournoi (fk_personne, fk_tournoi, resultat_tournoi) 
+                VALUES (%(value_personne)s, %(value_tournoi)s, %(value_resultat)s) """
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(strsql_insert_genre, valeurs_insertion_dictionnaire)
 
