@@ -15,7 +15,7 @@ from APP_FILMS_164.erreurs.exceptions import *
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFAjouterGenres
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFDeleteGenre
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFUpdateGenre
-from APP_FILMS_164.resultats.gestion_resultats_wtf_forms import FormWTFAjouterResultats
+from APP_FILMS_164.resultats.gestion_resultats_wtf_forms import FormWTFAjouterResultats, FormWTFUpdateResultats
 
 """
     Auteur : OM 2021.03.16
@@ -160,30 +160,37 @@ def resultats_ajouter_wtf():
 """
 
 
-@app.route("/genre_update", methods=['GET', 'POST'])
+@app.route("/restultats_update", methods=['GET', 'POST'])
 def resultats_update_wtf():
     # L'utilisateur vient de cliquer sur le bouton "EDIT". Récupère la valeur de "id_genre"
-    id_genre_update = request.values['id_genre_btn_edit_html']
 
     # Objet formulaire pour l'UPDATE
-    form_update = FormWTFUpdateGenre()
+    form_update = FormWTFUpdateResultats()
     try:
         print(" on submit ", form_update.validate_on_submit())
         if form_update.validate_on_submit():
+            id_pers_participer_tournoi = request.values['id_resultats_btn_edit_html']
             # Récupèrer la valeur du champ depuis "resultats_update_wtf.html" après avoir cliqué sur "SUBMIT".
             # Puis la convertir en lettres minuscules.
-            nom_pers_update = form_update.nom_pers_update_wtf.data
-            prenom_pers_update = form_update.prenom_pers_update_wtf.data
+            personne_wtf_update = form_update.personne_wtf_update.data
+            resultat_wtf_update = form_update.resultat_wtf_update.data
+            tournoi_wtf_update = form_update.resultat_wtf_update.data
+
+            
+
 
             #name_genre_update = name_genre_update.lower()
 
-            valeur_update_dictionnaire = {"value_id_personne": id_genre_update,
-                                          "value_nom_pers_update": nom_pers_update,
-                                          "value_prenom_pers_update": prenom_pers_update
+            valeur_update_dictionnaire = {"value_id_genre_update": id_pers_participer_tournoi,
+                                          "value_fk_personne": personne_wtf_update,
+                                          "value_resultat_personne": resultat_wtf_update,
+                                          "value_tournoi_personne": tournoi_wtf_update
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_intitulegenre = """UPDATE t_personne SET nom_pers=%(value_nom_pers_update)s, prenom_pers=%(value_prenom_pers_update)s WHERE id_personne=%(value_id_personne)s"""
+            str_sql_update_intitulegenre = """UPDATE t_pers_participer_tournoi
+                                                SET fk_personne=%(value_fk_personne)s, fk_tournoi=%(value_tournoi_personne)s, resultat_tournoi=%(value_resultat_personne)s 
+                                                WHERE  id_pers_participer_tournoi=%(value_id_genre_update)s;"""
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
 
@@ -192,12 +199,12 @@ def resultats_update_wtf():
 
             # afficher et constater que la donnée est mise à jour.
             # Affiche seulement la valeur modifiée, "ASC" et l'"id_genre_update"
-            return redirect(url_for('resultats_afficher', order_by="ASC", id_genre_sel=id_genre_update))
+            return redirect(url_for('resultats_afficher', order_by="ASC", id_genre_sel=id_pers_participer_tournoi))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "nom_pers" de la "t_genre"
-            str_sql_id_genre = "SELECT * FROM t_personne " \
-                               "WHERE id_personne = %(value_id_genre)s"
-            valeur_select_dictionnaire = {"value_id_genre": id_genre_update}
+            str_sql_id_genre = "SELECT * FROM t_pers_participer_tournoi " \
+                               "WHERE id_personne = %(value_id_genre_update)s"
+            valeur_select_dictionnaire = {"value_id_genre_update": id_pers_participer_tournoi}
             with DBconnection() as mybd_conn:
                 mybd_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
