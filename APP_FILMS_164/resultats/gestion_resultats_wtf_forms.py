@@ -47,17 +47,17 @@ class FormWTFUpdateResultats(FlaskForm):
         Dans le formulaire "resultats_update_wtf.html" on impose que le champ soit rempli.
         Définition d'un "bouton" submit avec un libellé personnalisé.
     """
-    nom_genre_update_regexp = ""
+    nom_resultats_update_regexp = ""
 
     resultat_wtf_update = StringField("Insérer le résultats ", validators=[Length(min=1, max=20, message="min 1 max 20"),
-                                                                    Regexp(nom_genre_update_regexp,
+                                                                    Regexp(nom_resultats_update_regexp,
                                                                            message="Pas de caractères "
                                                                                    "spéciaux, "
                                                                                    "d'espace à double, de double "
                                                                                    "apostrophe, de double trait union")
                                                                     ])
-    personne_wtf_update = StringField("Insérer le nom d'une personne ", validators=[Length(min=2, max=20, message="min 2 max 20"),
-                                                                          Regexp(nom_genre_update_regexp,
+    personne_wtf_update = StringField("Insérer le nom d'une personne ", validators=[Length(min=1, max=20, message="min 2 max 20"),
+                                                                          Regexp(nom_resultats_update_regexp,
                                                                                  message="Pas de"
                                                                                          "caractères "
                                                                                          "spéciaux, "
@@ -67,7 +67,7 @@ class FormWTFUpdateResultats(FlaskForm):
 
                                                                           ])
     tournoi_wtf_update = StringField("Insérer le fk du tournoi ", validators=[Length(min=1, max=20, message="min 1 max 20"),
-                                                                       Regexp(nom_genre_update_regexp,
+                                                                       Regexp(nom_resultats_update_regexp,
                                                                               message="Pas de    caractères "
                                                                                       "spéciaux, "
                                                                                       "d'espace à double, de double "

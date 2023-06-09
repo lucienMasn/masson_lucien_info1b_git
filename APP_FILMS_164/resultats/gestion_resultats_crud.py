@@ -35,9 +35,10 @@ def resultats_afficher(order_by, id_genre_sel):
         try:
             with DBconnection() as mc_afficher:
                 if order_by == "ASC" and id_genre_sel == 0:
-                    strsql_genres_afficher = """SELECT id_personne, nom_pers, resultat_tournoi, date_tournoi,nom_tournoi, discipline_tournoi  FROM t_personne p
-                                                    INNER JOIN t_pers_participer_tournoi pt ON p.id_personne = pt.fk_personne
-                                                    INNER JOIN t_tournoi t ON pt.fk_tournoi = t.id_tournoi"""
+                    strsql_genres_afficher = """SELECT id_pers_participer_tournoi, nom_pers, resultat_tournoi, date_tournoi,nom_tournoi, discipline_tournoi  FROM t_personne p
+                                                INNER JOIN t_pers_participer_tournoi pt ON p.id_personne = pt.fk_personne
+                                                INNER JOIN t_tournoi t ON pt.fk_tournoi = t.id_tournoi
+                                                ORDER BY id_pers_participer_tournoi ASC"""
                     mc_afficher.execute(strsql_genres_afficher)
                 elif order_by == "ASC":
                     # C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
@@ -46,15 +47,16 @@ def resultats_afficher(order_by, id_genre_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_id_genre_selected_dictionnaire = {"value_id_genre_selected": id_genre_sel}
-                    strsql_genres_afficher = """SELECT id_personne, nom_pers, resultat_tournoi, date_tournoi,nom_tournoi, discipline_tournoi  FROM t_personne p
+                    strsql_genres_afficher = """SELECT id_pers_participer_tournoi, nom_pers, resultat_tournoi, date_tournoi,nom_tournoi, discipline_tournoi  FROM t_personne p
                                                 INNER JOIN t_pers_participer_tournoi pt ON p.id_personne = pt.fk_personne
                                                 INNER JOIN t_tournoi t ON pt.fk_tournoi = t.id_tournoi  = %(value_id_genre_selected)s"""
 
                     mc_afficher.execute(strsql_genres_afficher, valeur_id_genre_selected_dictionnaire)
                 else:
-                    strsql_genres_afficher = """SELECT id_personne, nom_pers, resultat_tournoi, date_tournoi,nom_tournoi, discipline_tournoi  FROM t_personne p
+                    strsql_genres_afficher = """SELECT id_pers_participer_tournoi, nom_pers, resultat_tournoi, date_tournoi,nom_tournoi, discipline_tournoi  FROM t_personne p
                                                 INNER JOIN t_pers_participer_tournoi pt ON p.id_personne = pt.fk_personne
-                                                INNER JOIN t_tournoi t ON pt.fk_tournoi = t.id_tournoi"""
+                                                INNER JOIN t_tournoi t ON pt.fk_tournoi = t.id_tournoi
+                                                ORDER BY id_pers_participer_tournoi DESC """
 
                     mc_afficher.execute(strsql_genres_afficher)
 
@@ -163,13 +165,14 @@ def resultats_ajouter_wtf():
 @app.route("/restultats_update", methods=['GET', 'POST'])
 def resultats_update_wtf():
     # L'utilisateur vient de cliquer sur le bouton "EDIT". Récupère la valeur de "id_genre"
+    id_resultats_update = request.values['id_resultats_btn_edit_html']
 
     # Objet formulaire pour l'UPDATE
     form_update = FormWTFUpdateResultats()
     try:
         print(" on submit ", form_update.validate_on_submit())
         if form_update.validate_on_submit():
-            id_pers_participer_tournoi = request.values['id_resultats_btn_edit_html']
+
             # Récupèrer la valeur du champ depuis "resultats_update_wtf.html" après avoir cliqué sur "SUBMIT".
             # Puis la convertir en lettres minuscules.
             personne_wtf_update = form_update.personne_wtf_update.data
@@ -181,7 +184,7 @@ def resultats_update_wtf():
 
             #name_genre_update = name_genre_update.lower()
 
-            valeur_update_dictionnaire = {"value_id_genre_update": id_pers_participer_tournoi,
+            valeur_update_dictionnaire = {"value_id_resultats_update": id_resultats_update,
                                           "value_fk_personne": personne_wtf_update,
                                           "value_resultat_personne": resultat_wtf_update,
                                           "value_tournoi_personne": tournoi_wtf_update
@@ -190,7 +193,7 @@ def resultats_update_wtf():
 
             str_sql_update_intitulegenre = """UPDATE t_pers_participer_tournoi
                                                 SET fk_personne=%(value_fk_personne)s, fk_tournoi=%(value_tournoi_personne)s, resultat_tournoi=%(value_resultat_personne)s 
-                                                WHERE  id_pers_participer_tournoi=%(value_id_genre_update)s;"""
+                                                WHERE id_pers_participer_tournoi=%(value_id_resultats_update)s;"""
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
 
@@ -199,22 +202,23 @@ def resultats_update_wtf():
 
             # afficher et constater que la donnée est mise à jour.
             # Affiche seulement la valeur modifiée, "ASC" et l'"id_genre_update"
-            return redirect(url_for('resultats_afficher', order_by="ASC", id_genre_sel=id_pers_participer_tournoi))
+            return redirect(url_for('resultats_afficher', order_by="ASC", id_genre_sel=id_resultats_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "nom_pers" de la "t_genre"
             str_sql_id_genre = "SELECT * FROM t_pers_participer_tournoi " \
-                               "WHERE id_personne = %(value_id_genre_update)s"
-            valeur_select_dictionnaire = {"value_id_genre_update": id_pers_participer_tournoi}
+                               "WHERE id_pers_participer_tournoi = %(value_id_resultats_update)s"
+            valeur_select_dictionnaire = {"value_id_resultats_update": id_resultats_update}
             with DBconnection() as mybd_conn:
                 mybd_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
             data_nom_genre = mybd_conn.fetchone()
             print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
-                  data_nom_genre["nom_pers"])
+                  data_nom_genre["fk_personne"])
 
             # Afficher la valeur sélectionnée dans les champs du formulaire "resultats_update_wtf.html"
-            form_update.nom_pers_update_wtf.data = data_nom_genre["nom_pers"]
-            form_update.prenom_pers_update_wtf.data = data_nom_genre["prenom_pers"]
+            form_update.personne_wtf_update.data = data_nom_genre["fk_personne"]
+            form_update.resultat_wtf_update.data = data_nom_genre["resultat_tournoi"]
+            form_update.tournoi_wtf_update.data = data_nom_genre["fk_tournoi"]
            ## form_update.date_genre_wtf_essai.data = data_nom_genre["date_ins_genre"]
 
     except Exception as Exception_genre_update_wtf:
