@@ -32,7 +32,7 @@ def films_genres_afficher(id_film_sel):
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_films_afficher_data = """SELECT id_personne, nom_pers, prenom_pers, date_naiss_pers FROM t_personne """
+                strsql_genres_films_afficher_data = """SELECT id_personne, nom_pers, prenom_pers, date_naiss_pers FROM t_personne GROUP BY id_personne """
 
                 if id_film_sel == 0:
                     # le paramètre 0 permet d'afficher tous les films
@@ -90,7 +90,7 @@ def edit_genre_film_selected():
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_afficher = """SELECT id_licence, code_digit FROM t_licence ORDER BY id_licence ASC"""
+                strsql_genres_afficher = """SELECT id_licence, code_digit_licence FROM t_licence ORDER BY id_licence ASC"""
                 mc_afficher.execute(strsql_genres_afficher)
             data_genres_all = mc_afficher.fetchall()
             print("dans edit_genre_film_selected ---> data_genres_all", data_genres_all)
@@ -118,20 +118,20 @@ def edit_genre_film_selected():
                 genres_films_afficher_data(valeur_id_film_selected_dictionnaire)
 
             print(data_genre_film_selected)
-            lst_data_film_selected = [item['id_film'] for item in data_genre_film_selected]
+            lst_data_film_selected = [item['id_licence'] for item in data_genre_film_selected]
             print("lst_data_film_selected  ", lst_data_film_selected,
                   type(lst_data_film_selected))
 
             # Dans le composant "tags-selector-tagselect" on doit connaître
             # les genres qui ne sont pas encore sélectionnés.
-            lst_data_genres_films_non_attribues = [item['id_genre'] for item in data_genres_films_non_attribues]
+            lst_data_genres_films_non_attribues = [item['id_licence'] for item in data_genres_films_non_attribues]
             session['session_lst_data_genres_films_non_attribues'] = lst_data_genres_films_non_attribues
             print("lst_data_genres_films_non_attribues  ", lst_data_genres_films_non_attribues,
                   type(lst_data_genres_films_non_attribues))
 
             # Dans le composant "tags-selector-tagselect" on doit connaître
             # les genres qui sont déjà sélectionnés.
-            lst_data_genres_films_old_attribues = [item['id_contact'] for item in data_genres_films_attribues]
+            lst_data_genres_films_old_attribues = [item['id_licence'] for item in data_genres_films_attribues]
             session['session_lst_data_genres_films_old_attribues'] = lst_data_genres_films_old_attribues
             print("lst_data_genres_films_old_attribues  ", lst_data_genres_films_old_attribues,
                   type(lst_data_genres_films_old_attribues))
@@ -144,7 +144,7 @@ def edit_genre_film_selected():
 
             # Extrait les valeurs contenues dans la table "t_genres", colonne "nom_pers"
             # Le composant javascript "tagify" pour afficher les tags n'a pas besoin de l'id_genre
-            lst_data_genres_films_non_attribues = [item['nom_pers'] for item in data_genres_films_non_attribues]
+            lst_data_genres_films_non_attribues = [item['id_licence'] for item in data_genres_films_non_attribues]
             print("lst_all_genres gf_edit_genre_film_selected ", lst_data_genres_films_non_attribues,
                   type(lst_data_genres_films_non_attribues))
 
