@@ -47,19 +47,16 @@
                                 id
                             </th>
                             <th class="">
-                                Titre
+                                Nom
                             </th>
                             <th class="">
-                                Durée
+                                Date naissance
                             </th>
                             <th class="">
-                                Date sortie
+                                Sexe
                             </th>
                             <th class="">
-                                Description
-                            </th>
-                            <th class="">
-                                Affiche
+                                Lieux de naissance
                             </th>
                         </tr>
                     </thead>
@@ -72,7 +69,7 @@
 							{{ row.id_personne }}
 						</td>
 						<td class="align-middle">
-							{{ row.nom_personne }}
+							{{ row.nom_pers }}
 						</td>
 						<td class="align-middle">
 							{{ row.date_naiss_pers}}
@@ -83,9 +80,7 @@
 						<td class="align-middle">
 							{{ row.lieux_naiss_pers }}
 						</td>
-						<td class="align-middle">
-                            <img class="img" src={{ row.cover_link_film|default(None, True) }} style="border: 0;display:block; width:150px; max-height:auto;" alt = "image masquée FFP67 (in COVID-29 Memory) (absente) mod 164">
-						</td>
+
 					</tr>
 				</tbody>
             {% else %}
@@ -112,11 +107,11 @@
                 <div class="qtagselect isw360">
                     <select id="OM_JTSD" name="name_select_tags" class="qtagselect__select" multiple>
                         {% for row in data_genres_non_attribues %}
-                            <option value="{{ row.id_genre }}" name="name_tags_non_attribues_html" class="isblue" >{{ row.nom_pers }}</option>
+                            <option value="{{ row.id_licence }}" name="name_tags_non_attribues_html" class="isblue" >{{ row.nom_pers }}</option>
                         {% endfor %}
 
                         {% for row in data_genres_attribues %}
-                            <option value="{{ row.id_genre }}" name="name_tags_attribues_html" class="ispurple" selected>{{ row.nom_pers }}</option>
+                            <option value="{{ row.id_licence }}" name="name_tags_attribues_html" class="ispurple" selected>{{ row.nom_pers }}</option>
                         {% endfor %}
                     </select>
                 </div>

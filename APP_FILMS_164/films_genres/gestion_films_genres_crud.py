@@ -285,7 +285,7 @@ def genres_films_afficher_data(valeur_id_film_selected_dict):
                                         FROM t_personne p
                                         INNER JOIN t_pers_avoir_licence al ON p.id_personne = al.fk_personne
                                         INNER JOIN t_licence l ON al.fk_licence = l.id_licence
-                                        WHERE id_personne = = %(value_id_film_selected)s)"""
+                                        WHERE id_personne = %(value_id_film_selected)s"""
 
         strsql_genres_films_attribues = """SELECT id_personne, nom_pers, prenom_pers, date_naiss_pers, sexe_pers, lieux_naiss_pers, 
                                     id_licence, federation_licence, code_digit_licence
