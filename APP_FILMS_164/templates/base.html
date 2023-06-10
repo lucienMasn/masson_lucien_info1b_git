@@ -1,4 +1,4 @@
-R<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -60,6 +60,17 @@ R<!DOCTYPE html>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link text-white" href="{{ url_for('route_hommage_a_u_x_V_ictim_es_du_monstre_du_mod_1_6_4') }}">Licences</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navdropdownfilms" role="button"
+						   data-bs-toggle="dropdown" aria-expanded="false">
+							Films
+						</a>
+						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+							<li><a class="nav-link" href="{{ url_for('films_genres_afficher', id_film_sel=0) }}">Films</a>
+							</li>
+							<li><a class="nav-link" href="{{ url_for('films_genres_afficher', id_film_sel=0) }}">Films/Genres</a></li>
+						</ul>
 					</li>
 				</ul>
 			</div>

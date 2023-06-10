@@ -18,16 +18,7 @@
 						Nom
 					</th>
 					<th class="">
-						Durée
-					</th>
-					<th class="">
-						Date de sortie
-					</th>
-					<th class="">
-						Description
-					</th>
-					<th class="">
-						Affiche
+						Prenom
 					</th>
 				</tr>
 				</thead>
@@ -36,19 +27,13 @@
 				<tbody>
 				<tr>
 					<th class="align-middle">
-						{{ row.id_film }}
+						{{ row.id_personne }}
 					</th>
 					<th class="align-middle">
-						{{ row.nom_film }}
+						{{ row.nom_pers }}
 					</th>
 					<th class="align-middle">
-						{{ row.duree_film|default("", True) }}
-					</th>
-					<th class="align-middle">
-						{{ row.date_sortie_film|default("", True) }}
-					</th>
-					<th class="align-middle">
-						{{ row.description_film|default("", True) }}
+						{{ row.prenom_pers }}
 					</th>
 					<th class="align-middle">
 						<img class="img" src={{ row.cover_link_film|default(None, True) }}
