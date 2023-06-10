@@ -159,7 +159,7 @@ def resultats_ajouter_wtf():
                 On ne doit pas accepter des valeurs vides, des valeurs avec des chiffres,
                 des valeurs avec des caractères qui ne sont pas des lettres.
                 Pour comprendre [A-Za-zÀ-ÖØ-öø-ÿ] il faut se reporter à la table ASCII https://www.ascii-code.com/
-                Accepte le trait d'union ou l'apostrophe, et l'espace entre deux mots, mais pas plus d'une occurence.
+                Accepte le trait d'union ou l'apostrophe, et l'espace entre deux mots, mais pas plus d'une occurence .
 """
 
 
