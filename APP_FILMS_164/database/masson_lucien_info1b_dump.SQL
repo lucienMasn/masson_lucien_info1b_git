@@ -72,7 +72,7 @@ CREATE TABLE `t_contact` (
   `mail_contact` varchar(80) NOT NULL,
   `telephone_contact` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id_contact`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,7 +81,7 @@ CREATE TABLE `t_contact` (
 
 LOCK TABLES `t_contact` WRITE;
 /*!40000 ALTER TABLE `t_contact` DISABLE KEYS */;
-INSERT INTO `t_contact` VALUES (1,'lmamail@tes.ch','0125478941'),(2,'2ndmailtestjp@tt.com','012487912'),(3,'monmail@gmail.com',NULL),(4,'testmail','12345678');
+INSERT INTO `t_contact` VALUES (1,'matthieu@laseigne.ch','07987663465'),(2,'anais@laseigne.ch','0775328756'),(3,'laurence@laseigne.ch','0774560998'),(4,'leo@laseigne.ch','0766549009'),(5,'elea@laseigne.ch','0798767543'),(6,'romain@laseigne.ch','0788977865'),(7,'christine@laseigne.ch','0765378412'),(8,'karim@laseigne.ch','0778711243');
 /*!40000 ALTER TABLE `t_contact` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +97,7 @@ CREATE TABLE `t_licence` (
   `federation_licence` char(30) DEFAULT NULL,
   `code_digit_licence` char(6) DEFAULT NULL,
   PRIMARY KEY (`id_licence`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,7 +106,7 @@ CREATE TABLE `t_licence` (
 
 LOCK TABLES `t_licence` WRITE;
 /*!40000 ALTER TABLE `t_licence` DISABLE KEYS */;
-INSERT INTO `t_licence` VALUES (1,'SwissArchery','2040'),(2,'FSAA','1447');
+INSERT INTO `t_licence` VALUES (1,'SwissArchery','24578'),(2,'FSAA','1447'),(3,'SwissArchery','45643'),(4,'SwissArchery','24769'),(5,'SwissArchery','45645'),(6,'FSAA','3464'),(7,'FSAA','3264'),(8,'SwissArchery','86338');
 /*!40000 ALTER TABLE `t_licence` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -127,7 +127,7 @@ CREATE TABLE `t_pers_avoir_contact` (
   KEY `FK_t_pers_avoir_contact_t_personne` (`fk_personne`),
   CONSTRAINT `FK_t_pers_avoir_contact_t_contact` FOREIGN KEY (`fk_contact`) REFERENCES `t_contact` (`id_contact`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FK_t_pers_avoir_contact_t_personne` FOREIGN KEY (`fk_personne`) REFERENCES `t_personne` (`id_personne`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +136,7 @@ CREATE TABLE `t_pers_avoir_contact` (
 
 LOCK TABLES `t_pers_avoir_contact` WRITE;
 /*!40000 ALTER TABLE `t_pers_avoir_contact` DISABLE KEYS */;
-INSERT INTO `t_pers_avoir_contact` VALUES (1,1,3,'2023-04-11 12:17:28'),(2,3,3,'2023-04-11 12:18:11'),(3,2,2,'2023-04-11 12:18:21'),(5,5,4,'2023-06-09 08:03:19');
+INSERT INTO `t_pers_avoir_contact` VALUES (6,1,1,'2023-06-10 10:27:35'),(7,2,5,'2023-06-10 10:27:47'),(8,3,3,'2023-06-10 10:27:59'),(9,4,4,'2023-06-10 10:28:07'),(10,5,6,'2023-06-10 10:28:14'),(11,6,2,'2023-06-10 10:28:26'),(12,12,7,'2023-06-10 10:28:50'),(13,13,8,'2023-06-10 10:28:58');
 /*!40000 ALTER TABLE `t_pers_avoir_contact` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,7 +156,7 @@ CREATE TABLE `t_pers_avoir_licence` (
   KEY `FK_t_pers_avoir_licence_t_personne` (`fk_personne`),
   CONSTRAINT `FK_t_pers_avoir_licence_t_licence` FOREIGN KEY (`fk_licence`) REFERENCES `t_licence` (`id_licence`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FK_t_pers_avoir_licence_t_personne` FOREIGN KEY (`fk_personne`) REFERENCES `t_personne` (`id_personne`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +165,7 @@ CREATE TABLE `t_pers_avoir_licence` (
 
 LOCK TABLES `t_pers_avoir_licence` WRITE;
 /*!40000 ALTER TABLE `t_pers_avoir_licence` DISABLE KEYS */;
-INSERT INTO `t_pers_avoir_licence` VALUES (1,3,2),(2,1,1);
+INSERT INTO `t_pers_avoir_licence` VALUES (3,1,1),(4,2,2),(5,3,3),(6,4,4),(7,5,5),(8,6,6),(9,12,7),(10,13,8);
 /*!40000 ALTER TABLE `t_pers_avoir_licence` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,7 +185,7 @@ CREATE TABLE `t_pers_habiter_adresse` (
   KEY `FK_t_pers_habiter_adresse_t_personne` (`fk_personne`),
   CONSTRAINT `FK_t_pers_habiter_adresse_t_adresse` FOREIGN KEY (`fk_adresse`) REFERENCES `t_adresse` (`id_adresse`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FK_t_pers_habiter_adresse_t_personne` FOREIGN KEY (`fk_personne`) REFERENCES `t_personne` (`id_personne`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -194,7 +194,7 @@ CREATE TABLE `t_pers_habiter_adresse` (
 
 LOCK TABLES `t_pers_habiter_adresse` WRITE;
 /*!40000 ALTER TABLE `t_pers_habiter_adresse` DISABLE KEYS */;
-INSERT INTO `t_pers_habiter_adresse` VALUES (1,1,2),(2,2,3),(3,3,1);
+INSERT INTO `t_pers_habiter_adresse` VALUES (4,1,1),(5,2,2),(6,3,3),(7,4,4),(8,5,5),(9,6,6),(10,12,7),(11,13,8);
 /*!40000 ALTER TABLE `t_pers_habiter_adresse` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -225,7 +225,7 @@ CREATE TABLE `t_pers_participer_tournoi` (
 
 LOCK TABLES `t_pers_participer_tournoi` WRITE;
 /*!40000 ALTER TABLE `t_pers_participer_tournoi` DISABLE KEYS */;
-INSERT INTO `t_pers_participer_tournoi` VALUES (1,1,1,'1','2023-04-11'),(2,3,2,'2','2023-04-11'),(3,1,3,'3','2023-04-11'),(4,2,2,'12',NULL),(5,2,3,'7',NULL),(6,4,1,'12',NULL),(7,1,1,'4',NULL);
+INSERT INTO `t_pers_participer_tournoi` VALUES (1,1,1,'1','2023-04-11'),(2,3,2,'2','2023-04-11'),(3,1,3,'3','2023-04-11'),(4,2,2,'12',NULL),(5,2,3,'7',NULL),(6,4,1,'12',NULL),(7,2,3,'13',NULL);
 /*!40000 ALTER TABLE `t_pers_participer_tournoi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,7 +244,7 @@ CREATE TABLE `t_personne` (
   `sexe_pers` char(1) DEFAULT NULL,
   `lieux_naiss_pers` char(30) DEFAULT NULL,
   PRIMARY KEY (`id_personne`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -253,7 +253,7 @@ CREATE TABLE `t_personne` (
 
 LOCK TABLES `t_personne` WRITE;
 /*!40000 ALTER TABLE `t_personne` DISABLE KEYS */;
-INSERT INTO `t_personne` VALUES (1,'Lucien','Masson','2006-07-16','M','Morges'),(2,'Annais','Duboi','1977-07-03','F',NULL),(3,'Estelle','Limoniers','1998-03-04','F','Yverdon-les-bains'),(4,'Paul','Limoniers','1997-07-11','M',NULL),(5,'Matthieu','Mayor','1970-09-07','M',NULL),(6,'Paul','Baumer','2000-11-12','F',NULL);
+INSERT INTO `t_personne` VALUES (1,'Matthieu','Gressly','1990-07-08','M','Yverdon'),(2,'Eléa','Duboi','1977-07-03','F','Genève'),(3,'Laurence','Limoniers','1998-03-04','F','Yverdon-les-bains'),(4,'Léo','Limoniers','1997-07-11','M',NULL),(5,'Romain','Mayor','1970-09-07','M',NULL),(6,'Anais','Baumer','2000-11-12','F',NULL),(12,'Christine','Puidoux','1970-06-04','F','Morges'),(13,'Karim','Berclez','1990-02-03','M','Moudon');
 /*!40000 ALTER TABLE `t_personne` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -291,4 +291,5 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-09 10:21:35
+-- Dump completed on 2023-06-10 12:35:08
+
