@@ -20,7 +20,7 @@
 						<thead>
 							<tr>
 								<th>
-									FILM(S)
+									Resultats
 								</th>
 							</tr>
 						</thead>
@@ -28,7 +28,7 @@
 							<tbody>
 								<tr>
 									<td>
-										{{ row.nom_film }}
+										{{ row.fk_personne }}
 									</td>
 								</tr>
 							</tbody>
@@ -39,9 +39,9 @@
 
 				<div class="form-group">
 					<p>
-						{{ form_delete.nom_genre_delete_wtf.label }}<br>
-						{{ form_delete.nom_genre_delete_wtf(size=32, readonly=true) }}<br>
-						{% for error in form_delete.nom_genre_delete_wtf.errors %}
+						{{ form_delete.nom_resultats_delete_wtf.label }}<br>
+						{{ form_delete.nom_resultats_delete_wtf(size=32, readonly=true) }}<br>
+						{% for error in form_delete.nom_resultats_delete_wtf.errors %}
 							<span style="color: red;">[{{ error }}]</span>
 						{% endfor %}
 					</p>

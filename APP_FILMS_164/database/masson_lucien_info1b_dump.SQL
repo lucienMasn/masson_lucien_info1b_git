@@ -15,13 +15,11 @@ CREATE DATABASE IF NOT EXISTS masson_lucien_info1b_m164_db;
 -- Utilisation de cette base de donnée
 
 USE masson_lucien_info1b_m164_db;
--- --------------------------------------------------------
-
 -- MySQL dump 10.13  Distrib 5.1.72, for Win32 (ia32)
 --
 -- Host: localhost    Database: masson_lucien_info1b_m164_db
 -- ------------------------------------------------------
--- Server version	5.1.72-community
+-- Server version	8.0.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -42,14 +40,14 @@ DROP TABLE IF EXISTS `t_adresse`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_adresse` (
-  `id_adresse` int(11) NOT NULL AUTO_INCREMENT,
+  `id_adresse` int NOT NULL AUTO_INCREMENT,
   `rue_adresse` varchar(50) DEFAULT NULL,
   `no_rue_adresse` char(10) DEFAULT NULL,
   `ville_adresse` varchar(50) DEFAULT NULL,
   `npa_adresse` char(10) DEFAULT NULL,
   `pays_adresse` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id_adresse`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -58,7 +56,7 @@ CREATE TABLE `t_adresse` (
 
 LOCK TABLES `t_adresse` WRITE;
 /*!40000 ALTER TABLE `t_adresse` DISABLE KEYS */;
-INSERT INTO `t_adresse` VALUES (1,'chemin du moulin','7c','Yverdon','1542','Suisse'),(2,'Avenue Durcy','4b','Lausanne','1007','Suisse'),(3,'Rte.DeCH','2c','Sarzens','1544','Suisse');
+INSERT INTO `t_adresse` VALUES (1,'Rue des moulins','4','Yverdon','1401','Suisse'),(2,'Rue des Tuileries','12','Yverdon','1401','Suisse'),(3,'Rue du Milieu','5','Villars-Epeney','1404','Suisse'),(4,'Av. de sévelin','46','Lausanne','1003','Suisse'),(5,'Rue du Jura','12','Granson','1422','Suisse'),(6,'Rte du Signal','2','Orbe','1350','Suisse'),(7,'Grande-Rue','1','Molondin','1415','Suisse'),(8,'Rte Du crêt','3','Cronay','1406','Suisse');
 /*!40000 ALTER TABLE `t_adresse` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -70,11 +68,11 @@ DROP TABLE IF EXISTS `t_contact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_contact` (
-  `id_contact` int(11) NOT NULL AUTO_INCREMENT,
+  `id_contact` int NOT NULL AUTO_INCREMENT,
   `mail_contact` varchar(80) NOT NULL,
   `telephone_contact` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id_contact`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,7 +81,7 @@ CREATE TABLE `t_contact` (
 
 LOCK TABLES `t_contact` WRITE;
 /*!40000 ALTER TABLE `t_contact` DISABLE KEYS */;
-INSERT INTO `t_contact` VALUES (1,'lmamail@tes.ch','0125478941'),(2,'2ndmailtestjp@tt.com','012487912'),(3,'monmail@gmail.com',NULL);
+INSERT INTO `t_contact` VALUES (1,'lmamail@tes.ch','0125478941'),(2,'2ndmailtestjp@tt.com','012487912'),(3,'monmail@gmail.com',NULL),(4,'testmail','12345678');
 /*!40000 ALTER TABLE `t_contact` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,7 +93,7 @@ DROP TABLE IF EXISTS `t_licence`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_licence` (
-  `id_licence` int(11) NOT NULL AUTO_INCREMENT,
+  `id_licence` int NOT NULL AUTO_INCREMENT,
   `federation_licence` char(30) DEFAULT NULL,
   `code_digit_licence` char(6) DEFAULT NULL,
   PRIMARY KEY (`id_licence`)
@@ -120,16 +118,16 @@ DROP TABLE IF EXISTS `t_pers_avoir_contact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_pers_avoir_contact` (
-  `id_pers_avoir_contact` int(11) NOT NULL AUTO_INCREMENT,
-  `fk_personne` int(11) DEFAULT NULL,
-  `fk_contact` int(11) DEFAULT NULL,
+  `id_pers_avoir_contact` int NOT NULL AUTO_INCREMENT,
+  `fk_personne` int DEFAULT NULL,
+  `fk_contact` int DEFAULT NULL,
   `date_contact` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_pers_avoir_contact`),
   KEY `FK_t_pers_avoir_contact_t_contact` (`fk_contact`),
   KEY `FK_t_pers_avoir_contact_t_personne` (`fk_personne`),
-  CONSTRAINT `FK_t_pers_avoir_contact_t_contact` FOREIGN KEY (`fk_contact`) REFERENCES `t_contact` (`id_contact`),
-  CONSTRAINT `FK_t_pers_avoir_contact_t_personne` FOREIGN KEY (`fk_personne`) REFERENCES `t_personne` (`id_personne`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_t_pers_avoir_contact_t_contact` FOREIGN KEY (`fk_contact`) REFERENCES `t_contact` (`id_contact`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_t_pers_avoir_contact_t_personne` FOREIGN KEY (`fk_personne`) REFERENCES `t_personne` (`id_personne`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -138,7 +136,7 @@ CREATE TABLE `t_pers_avoir_contact` (
 
 LOCK TABLES `t_pers_avoir_contact` WRITE;
 /*!40000 ALTER TABLE `t_pers_avoir_contact` DISABLE KEYS */;
-INSERT INTO `t_pers_avoir_contact` VALUES (1,1,1,'2023-04-11 12:17:28'),(2,3,3,'2023-04-11 12:18:11'),(3,2,2,'2023-04-11 12:18:21');
+INSERT INTO `t_pers_avoir_contact` VALUES (1,1,3,'2023-04-11 12:17:28'),(2,3,3,'2023-04-11 12:18:11'),(3,2,2,'2023-04-11 12:18:21'),(5,5,4,'2023-06-09 08:03:19');
 /*!40000 ALTER TABLE `t_pers_avoir_contact` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,14 +148,14 @@ DROP TABLE IF EXISTS `t_pers_avoir_licence`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_pers_avoir_licence` (
-  `id_pers_avoir_licence` int(11) NOT NULL AUTO_INCREMENT,
-  `fk_personne` int(11) DEFAULT NULL,
-  `fk_licence` int(11) DEFAULT NULL,
+  `id_pers_avoir_licence` int NOT NULL AUTO_INCREMENT,
+  `fk_personne` int DEFAULT NULL,
+  `fk_licence` int DEFAULT NULL,
   PRIMARY KEY (`id_pers_avoir_licence`),
   KEY `FK_t_pers_avoir_licence_t_licence` (`fk_licence`),
   KEY `FK_t_pers_avoir_licence_t_personne` (`fk_personne`),
-  CONSTRAINT `FK_t_pers_avoir_licence_t_licence` FOREIGN KEY (`fk_licence`) REFERENCES `t_licence` (`id_licence`),
-  CONSTRAINT `FK_t_pers_avoir_licence_t_personne` FOREIGN KEY (`fk_personne`) REFERENCES `t_personne` (`id_personne`)
+  CONSTRAINT `FK_t_pers_avoir_licence_t_licence` FOREIGN KEY (`fk_licence`) REFERENCES `t_licence` (`id_licence`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_t_pers_avoir_licence_t_personne` FOREIGN KEY (`fk_personne`) REFERENCES `t_personne` (`id_personne`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -179,14 +177,14 @@ DROP TABLE IF EXISTS `t_pers_habiter_adresse`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_pers_habiter_adresse` (
-  `id_pers_habiter_adresse` int(11) NOT NULL AUTO_INCREMENT,
-  `fk_personne` int(11) DEFAULT NULL,
-  `fk_adresse` int(11) DEFAULT NULL,
+  `id_pers_habiter_adresse` int NOT NULL AUTO_INCREMENT,
+  `fk_personne` int DEFAULT NULL,
+  `fk_adresse` int DEFAULT NULL,
   PRIMARY KEY (`id_pers_habiter_adresse`),
   KEY `FK_t_pers_habiter_adresse_t_adresse` (`fk_adresse`),
   KEY `FK_t_pers_habiter_adresse_t_personne` (`fk_personne`),
-  CONSTRAINT `FK_t_pers_habiter_adresse_t_adresse` FOREIGN KEY (`fk_adresse`) REFERENCES `t_adresse` (`id_adresse`),
-  CONSTRAINT `FK_t_pers_habiter_adresse_t_personne` FOREIGN KEY (`fk_personne`) REFERENCES `t_personne` (`id_personne`)
+  CONSTRAINT `FK_t_pers_habiter_adresse_t_adresse` FOREIGN KEY (`fk_adresse`) REFERENCES `t_adresse` (`id_adresse`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_t_pers_habiter_adresse_t_personne` FOREIGN KEY (`fk_personne`) REFERENCES `t_personne` (`id_personne`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -208,17 +206,17 @@ DROP TABLE IF EXISTS `t_pers_participer_tournoi`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_pers_participer_tournoi` (
-  `id_pers_participer_tournoi` int(11) NOT NULL AUTO_INCREMENT,
-  `fk_personne` int(11) DEFAULT NULL,
-  `fk_tournoi` int(11) DEFAULT NULL,
+  `id_pers_participer_tournoi` int NOT NULL AUTO_INCREMENT,
+  `fk_personne` int DEFAULT NULL,
+  `fk_tournoi` int DEFAULT NULL,
   `resultat_tournoi` char(10) DEFAULT NULL,
   `date_tournoi` date DEFAULT NULL,
   PRIMARY KEY (`id_pers_participer_tournoi`),
   KEY `FK_t_pers_participer_tournoi_t_tournoi` (`fk_tournoi`),
   KEY `FK_t_pers_participer_tournoi_t_personne` (`fk_personne`),
-  CONSTRAINT `FK_t_pers_participer_tournoi_t_tournoi` FOREIGN KEY (`fk_tournoi`) REFERENCES `t_tournoi` (`id_tournoi`),
-  CONSTRAINT `FK_t_pers_participer_tournoi_t_personne` FOREIGN KEY (`fk_personne`) REFERENCES `t_personne` (`id_personne`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_t_pers_participer_tournoi_t_personne` FOREIGN KEY (`fk_personne`) REFERENCES `t_personne` (`id_personne`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_t_pers_participer_tournoi_t_tournoi` FOREIGN KEY (`fk_tournoi`) REFERENCES `t_tournoi` (`id_tournoi`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,7 +225,7 @@ CREATE TABLE `t_pers_participer_tournoi` (
 
 LOCK TABLES `t_pers_participer_tournoi` WRITE;
 /*!40000 ALTER TABLE `t_pers_participer_tournoi` DISABLE KEYS */;
-INSERT INTO `t_pers_participer_tournoi` VALUES (1,1,1,'1','2023-04-11'),(2,3,2,'2','2023-04-11'),(3,1,3,'3','2023-04-11');
+INSERT INTO `t_pers_participer_tournoi` VALUES (1,1,1,'1','2023-04-11'),(2,3,2,'2','2023-04-11'),(3,1,3,'3','2023-04-11'),(4,2,2,'12',NULL),(5,2,3,'7',NULL),(6,4,1,'12',NULL),(7,1,1,'4',NULL);
 /*!40000 ALTER TABLE `t_pers_participer_tournoi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -239,14 +237,14 @@ DROP TABLE IF EXISTS `t_personne`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_personne` (
-  `id_personne` int(11) NOT NULL AUTO_INCREMENT,
+  `id_personne` int NOT NULL AUTO_INCREMENT,
   `nom_pers` char(30) DEFAULT NULL,
-  `prenom_personne` char(50) DEFAULT NULL,
+  `prenom_pers` char(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `date_naiss_pers` date DEFAULT NULL,
   `sexe_pers` char(1) DEFAULT NULL,
   `lieux_naiss_pers` char(30) DEFAULT NULL,
   PRIMARY KEY (`id_personne`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -255,7 +253,7 @@ CREATE TABLE `t_personne` (
 
 LOCK TABLES `t_personne` WRITE;
 /*!40000 ALTER TABLE `t_personne` DISABLE KEYS */;
-INSERT INTO `t_personne` VALUES (1,'Lucien','Masson','2006-07-16','M','Morges'),(2,'Jean','Pierre','1954-02-01','M',NULL),(3,'Anne','Mouilin','1942-03-04','F','Yverdon-les-bains');
+INSERT INTO `t_personne` VALUES (1,'Lucien','Masson','2006-07-16','M','Morges'),(2,'Annais','Duboi','1977-07-03','F',NULL),(3,'Estelle','Limoniers','1998-03-04','F','Yverdon-les-bains'),(4,'Paul','Limoniers','1997-07-11','M',NULL),(5,'Matthieu','Mayor','1970-09-07','M',NULL),(6,'Paul','Baumer','2000-11-12','F',NULL);
 /*!40000 ALTER TABLE `t_personne` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -267,7 +265,7 @@ DROP TABLE IF EXISTS `t_tournoi`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_tournoi` (
-  `id_tournoi` int(11) NOT NULL AUTO_INCREMENT,
+  `id_tournoi` int NOT NULL AUTO_INCREMENT,
   `nom_tournoi` varchar(50) DEFAULT NULL,
   `discipline_tournoi` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id_tournoi`)
@@ -293,4 +291,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-11 14:35:50
+-- Dump completed on 2023-06-09 10:21:35

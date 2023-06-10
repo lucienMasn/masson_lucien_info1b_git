@@ -15,7 +15,8 @@ from APP_FILMS_164.erreurs.exceptions import *
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFAjouterGenres
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFDeleteGenre
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFUpdateGenre
-from APP_FILMS_164.resultats.gestion_resultats_wtf_forms import FormWTFAjouterResultats, FormWTFUpdateResultats
+from APP_FILMS_164.resultats.gestion_resultats_wtf_forms import FormWTFAjouterResultats, FormWTFUpdateResultats, \
+    FormWTFDeleteResultats
 
 """
     Auteur : OM 2021.03.16
@@ -249,10 +250,10 @@ def resultats_delete_wtf():
     data_films_attribue_genre_delete = None
     btn_submit_del = None
     # L'utilisateur vient de cliquer sur le bouton "DELETE". Récupère la valeur de "id_genre"
-    id_genre_delete = request.values['id_genre_btn_delete_html']
+    id_resultats_delete = request.values['id_resultats_btn_delete_html']
 
     # Objet formulaire pour effacer le genre sélectionné.
-    form_delete = FormWTFDeleteGenre()
+    form_delete = FormWTFDeleteResultats()
     try:
         print(" on submit ", form_delete.validate_on_submit())
         if request.method == "POST" and form_delete.validate_on_submit():
@@ -272,11 +273,11 @@ def resultats_delete_wtf():
                 btn_submit_del = True
 
             if form_delete.submit_btn_del.data:
-                valeur_delete_dictionnaire = {"value_id_genre": id_genre_delete}
+                valeur_delete_dictionnaire = {"value_id_genre": id_resultats_delete}
                 print("valeur_delete_dictionnaire ", valeur_delete_dictionnaire)
 
-                str_sql_delete_films_genre = """DELETE FROM t_genre_film WHERE fk_genre = %(value_id_genre)s"""
-                str_sql_delete_idgenre = """DELETE FROM t_personne WHERE id_personne = %(value_id_genre)s"""
+                str_sql_delete_films_genre = """DELETE FROM t_pers_participer_tournoi WHERE fk_personne = %(value_id_genre)s"""
+                str_sql_delete_idgenre = """DELETE FROM t_pers_participer_tournoi WHERE id_pers_participer_tournoi = %(value_id_genre)s"""
                 # Manière brutale d'effacer d'abord la "fk_genre", même si elle n'existe pas dans la "t_genre_film"
                 # Ensuite on peut effacer le genre vu qu'il n'est plus "lié" (INNODB) dans la "t_genre_film"
                 with DBconnection() as mconn_bd:
@@ -290,8 +291,8 @@ def resultats_delete_wtf():
                 return redirect(url_for('resultats_afficher', order_by="ASC", id_genre_sel=0))
 
         if request.method == "GET":
-            valeur_select_dictionnaire = {"value_id_genre": id_genre_delete}
-            print(id_genre_delete, type(id_genre_delete))
+            valeur_select_dictionnaire = {"value_id_genre": id_resultats_delete}
+            print(id_resultats_delete, type(id_resultats_delete))
 
             # Requête qui affiche tous les films_genres qui ont le genre que l'utilisateur veut effacer
             str_sql_genres_films_delete = """SELECT id_personne, nom_pers, prenom_pers, mail_contact, telephone_contact, resultat_tournoi, nom_tournoi, date_tournoi FROM t_personne p

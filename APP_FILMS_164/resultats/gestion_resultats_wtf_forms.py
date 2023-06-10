@@ -78,7 +78,7 @@ class FormWTFUpdateResultats(FlaskForm):
     submit = SubmitField("Update personne")
 
 
-class FormWTFDeleteGenre(FlaskForm):
+class FormWTFDeleteResultats(FlaskForm):
     """
         Dans le formulaire "resultats_delete_wtf.html"
 
@@ -87,7 +87,7 @@ class FormWTFDeleteGenre(FlaskForm):
         submit_btn_conf_del : Bouton de confirmation pour effacer un "genre".
         submit_btn_annuler : Bouton qui permet d'afficher la table "t_genre".
     """
-    nom_genre_delete_wtf = StringField("Effacer ce genre")
+    nom_resultats_delete_wtf = StringField("Effacer ce genre")
     submit_btn_del = SubmitField("Effacer genre")
     submit_btn_conf_del = SubmitField("Etes-vous sur d'effacer ?")
     submit_btn_annuler = SubmitField("Annuler")

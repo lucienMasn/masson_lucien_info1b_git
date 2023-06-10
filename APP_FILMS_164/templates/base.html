@@ -52,24 +52,15 @@
 						<!--		Afficher la liste des genres dans l'ordre (ASC) et tous les genres (0)-->
 						<a class="nav-link text-white" href="{{ url_for('resultats_afficher', order_by='ASC', id_genre_sel=0) }}">Résultat</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link text-white" href="{{ url_for('personnes_taille_dict') }}">Contact</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link text-white" href="{{ url_for('personnes_taille_dict') }}">Prochains tournois</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link text-white" href="{{ url_for('route_hommage_a_u_x_V_ictim_es_du_monstre_du_mod_1_6_4') }}">Licences</a>
-					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navdropdownfilms" role="button"
 						   data-bs-toggle="dropdown" aria-expanded="false">
 							Films
 						</a>
 						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-							<li><a class="nav-link" href="{{ url_for('films_genres_afficher', id_film_sel=0) }}">Films</a>
+							<li><a class="nav-link" href="{{ url_for('films_genres_afficher', id_film_sel=0) }}">Personnes</a>
 							</li>
-							<li><a class="nav-link" href="{{ url_for('films_genres_afficher', id_film_sel=0) }}">Films/Genres</a></li>
+							<li><a class="nav-link" href="{{ url_for('films_genres_afficher', id_film_sel=0) }}">Personne/Licence</a></li>
 						</ul>
 					</li>
 				</ul>
