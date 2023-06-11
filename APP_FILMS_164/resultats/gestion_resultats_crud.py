@@ -306,7 +306,7 @@ def resultats_delete_wtf():
                 # vu qu'il n'y a qu'un seul champ "nom genre" pour l'action DELETE
                 data_nom_genre = mydb_conn.fetchone()
                 print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
-                      data_nom_genre["nom_pers"])
+                      data_nom_genre["nom_tournoi"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "resultats_delete_wtf.html"
             form_delete.nom_resultats_delete_wtf.data = data_nom_genre["nom_tournoi"]

@@ -97,7 +97,7 @@ CREATE TABLE `t_licence` (
   `federation_licence` char(30) DEFAULT NULL,
   `code_digit_licence` char(6) DEFAULT NULL,
   PRIMARY KEY (`id_licence`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +165,7 @@ CREATE TABLE `t_pers_avoir_licence` (
 
 LOCK TABLES `t_pers_avoir_licence` WRITE;
 /*!40000 ALTER TABLE `t_pers_avoir_licence` DISABLE KEYS */;
-INSERT INTO `t_pers_avoir_licence` VALUES (3,1,1),(4,2,2),(5,3,3),(6,4,4),(7,5,5),(8,6,6),(9,12,7),(10,13,8);
+INSERT INTO `t_pers_avoir_licence` VALUES (4,2,2),(5,3,3),(6,4,4),(7,5,5),(8,6,6),(9,12,7),(10,13,8);
 /*!40000 ALTER TABLE `t_pers_avoir_licence` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,7 +244,7 @@ CREATE TABLE `t_personne` (
   `sexe_pers` char(1) DEFAULT NULL,
   `lieux_naiss_pers` char(30) DEFAULT NULL,
   PRIMARY KEY (`id_personne`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -269,7 +269,7 @@ CREATE TABLE `t_tournoi` (
   `nom_tournoi` varchar(50) DEFAULT NULL,
   `discipline_tournoi` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id_tournoi`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -278,7 +278,7 @@ CREATE TABLE `t_tournoi` (
 
 LOCK TABLES `t_tournoi` WRITE;
 /*!40000 ALTER TABLE `t_tournoi` DISABLE KEYS */;
-INSERT INTO `t_tournoi` VALUES (1,'Trn d\'hiver','3D'),(2,'trn Indoor','3D'),(3,'trn u20','3D');
+INSERT INTO `t_tournoi` VALUES (1,'Trn d\'hiver','3D'),(2,'trn Indoor','3D'),(3,'trn u20','3D'),(4,'European Youth Cup (2nd leg)','Indoor'),(5,'FITA Neuchâtel','Field'),(6,'Tournois Intern','3D'),(7,'Achers de la tour','Field'),(8,'Indoor 2023','Indoor');
 /*!40000 ALTER TABLE `t_tournoi` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -291,5 +291,6 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-10 12:35:08
+-- Dump completed on 2023-06-11  9:54:29
+
 
