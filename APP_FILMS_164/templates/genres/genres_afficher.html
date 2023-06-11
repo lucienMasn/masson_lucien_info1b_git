@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% block title %} Afficher GENRES {% endblock %}
+{% block title %} Afficher un archer {% endblock %}
 {% block body %}
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
 			<p>
-				Membres
+				Archers
 			</p>
             <table class="table table-bordered table-sm">
             {% if data %}
@@ -54,7 +54,7 @@
 				<tbody>
 					<tr>
 						<td>
-							Aucun genre.
+							Aucun archers.
 						</td>
 						<td>
 							<a class="btn btn-primary" href="{{ url_for('genre_ajouter_wtf') }}" role="button">Ajouter</a>
