@@ -184,8 +184,8 @@ def film_delete_wtf():
                 mconn_bd.execute(str_sql_delete_fk_film_genre, valeur_delete_dictionnaire)
                 mconn_bd.execute(str_sql_delete_film, valeur_delete_dictionnaire)
 
-            flash(f"Film définitivement effacé !!", "success")
-            print(f"Film définitivement effacé !!")
+            flash(f"Personne définitivement effacée !!", "success")
+            print(f"Personne définitivement effacée !!")
 
             # afficher les données
             return redirect(url_for('films_genres_afficher', id_film_sel=0))
