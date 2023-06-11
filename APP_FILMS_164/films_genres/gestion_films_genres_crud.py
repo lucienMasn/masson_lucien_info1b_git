@@ -206,26 +206,31 @@ def update_genre_film_selected():
 
             # Pour apprécier la facilité de la vie en Python... "les ensembles en Python"
             # https://fr.wikibooks.org/wiki/Programmation_Python/Ensembles
-            # OM 2021.05.02 Une liste de "id_genre" qui doivent être effacés de la table intermédiaire "t_genre_film".
+            # OM 2021.05.02 Une liste de "id_genre" qui doivent être effacés de la table intermédiaire "t_pers_avoir_licence".
             lst_diff_genres_delete_b = list(set(old_lst_data_genres_films_attribues) -
                                             set(new_lst_int_genre_film_old))
             print("lst_diff_genres_delete_b ", lst_diff_genres_delete_b)
 
-            # Une liste de "id_genre" qui doivent être ajoutés à la "t_genre_film"
+            # Une liste de "id_genre" qui doivent être ajoutés à la "t_pers_avoir_licence"
             lst_diff_genres_insert_a = list(
                 set(new_lst_int_genre_film_old) - set(old_lst_data_genres_films_attribues))
             print("lst_diff_genres_insert_a ", lst_diff_genres_insert_a)
 
             # SQL pour insérer une nouvelle association entre
-            # "fk_film"/"id_film" et "fk_genre"/"id_genre" dans la "t_genre_film"
+            # "fk_film"/"id_film" et "fk_personne"/"id_genre" dans la "t_pers_avoir_licence"
             strsql_insert_genre_film = """INSERT INTO t_pers_avoir_licence (fk_licence, fk_personne)
-                                                    VALUES (NULL, %(value_fk_genre)s, %(value_fk_film)s)"""
+                                        SELECT id_licence, %(value_fk_film)s
+                                        FROM t_licence
+                                        WHERE code_digit_licence = %(value_fk_genre)s"""
 
-            # SQL pour effacer une (des) association(s) existantes entre "id_film" et "id_genre" dans la "t_genre_film"
-            strsql_delete_genre_film = """DELETE FROM t_pers_avoir_licence WHERE fk_licence = %(value_fk_genre)s AND fk_personne = %(value_fk_film)s"""
+            strsql_delete_genre_film = """DELETE FROM t_pers_avoir_licence
+                                        WHERE fk_licence IN (SELECT id_licence
+                                                            FROM t_licence
+                                                            WHERE code_digit_licence = %(value_fk_genre)s)
+                                        AND fk_personne = %(value_fk_film)s"""
 
             with DBconnection() as mconn_bd:
-                # Pour le film sélectionné, parcourir la liste des genres à INSÉRER dans la "t_genre_film".
+                # Pour le film sélectionné, parcourir la liste des genres à INSÉRER dans la "t_pers_avoir_licence".
                 # Si la liste est vide, la boucle n'est pas parcourue.
                 for id_genre_ins in lst_diff_genres_insert_a:
                     # Constitution d'un dictionnaire pour associer l'id du film sélectionné avec un nom de variable
@@ -235,7 +240,7 @@ def update_genre_film_selected():
 
                     mconn_bd.execute(strsql_insert_genre_film, valeurs_film_sel_genre_sel_dictionnaire)
 
-                # Pour le film sélectionné, parcourir la liste des genres à EFFACER dans la "t_genre_film".
+                # Pour le film sélectionné, parcourir la liste des genres à EFFACER dans la "t_pers_avoir_licence".
                 # Si la liste est vide, la boucle n'est pas parcourue.
                 for id_genre_del in lst_diff_genres_delete_b:
                     # Constitution d'un dictionnaire pour associer l'id du film sélectionné avec un nom de variable
@@ -243,10 +248,6 @@ def update_genre_film_selected():
                     valeurs_film_sel_genre_sel_dictionnaire = {"value_fk_film": id_film_selected,
                                                                "value_fk_genre": id_genre_del}
 
-                    # Du fait de l'utilisation des "context managers" on accède au curseur grâce au "with".
-                    # la subtilité consiste à avoir une méthode "execute" dans la classe "DBconnection"
-                    # ainsi quand elle aura terminé l'insertion des données le destructeur de la classe "DBconnection"
-                    # sera interprété, ainsi on fera automatiquement un commit
                     mconn_bd.execute(strsql_delete_genre_film, valeurs_film_sel_genre_sel_dictionnaire)
 
         except Exception as Exception_update_genre_film_selected:
@@ -254,9 +255,10 @@ def update_genre_film_selected():
                                                    f"{update_genre_film_selected.__name__} ; "
                                                    f"{Exception_update_genre_film_selected}")
 
-    # Après cette mise à jour de la table intermédiaire "t_genre_film",
+    # Après cette mise à jour de la table intermédiaire "t_pers_avoir_licence",
     # on affiche les films et le(urs) genre(s) associé(s).
     return redirect(url_for('films_genres_afficher', id_film_sel=id_film_selected))
+
 
 
 """
