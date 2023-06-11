@@ -25,13 +25,6 @@
 							<span style="color: red;">[{{ error }}]</span>
 						{% endfor %}
 					</p>
-					<p>
-						{{ form_update.tournoi_wtf_update.label }}<br>
-						{{ form_update.tournoi_wtf_update(size=32) }}<br>
-						{% for error in form_update.tournoi_wtf_update.errors %}
-							<span style="color: red;">[{{ error }}]</span>
-						{% endfor %}
-					</p>
 				</div>
 				{{ form_update.submit(class="btn btn-primary") }}
 			</form>

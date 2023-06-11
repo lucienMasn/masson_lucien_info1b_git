@@ -5,22 +5,22 @@
 	<div class="row">
 		<div class="col-md-12">
 			<p>
-				Effacer un GENRE
+				Effacer un TORUNOI
 			</p>
 			<form action="" method="POST" novalidate>
 				<!-- Protection contre les attaques Cross-Site Request Forgery (CSRF) -->
 				{{ form_delete.hidden_tag() }}
 				<table class="table table-bordered table-sm">
 					{% if data_films_associes %}
-						<h3>Ce genre est associé avec le(s) film(s) suivant(s) :</h3>
+						<h3>Ce tournoi est associé avec les resultats suivant(s) :</h3>
 					{% else %}
-						<h3>Ce genre à effacer n'est associé à aucun film.</h3>
+						<h3>Ce tournoi à effacer n'est associé à aucun resultats.</h3>
 					{% endif %}
 					{% if data_films_associes %}
 						<thead>
 							<tr>
 								<th>
-									Resultats
+									Tournois
 								</th>
 							</tr>
 						</thead>
@@ -28,7 +28,7 @@
 							<tbody>
 								<tr>
 									<td>
-										{{ row.fk_personne }}
+										{{ row.id_tournoi }}
 									</td>
 								</tr>
 							</tbody>

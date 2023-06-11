@@ -17,7 +17,7 @@ class FormWTFAjouterResultats(FlaskForm):
         Définition d'un "bouton" submit avec un libellé personnalisé.
     """
     nom_genre_regexp = ""
-    resultat_wtf = StringField("Insérer le résultats ", validators=[Length(min=1, max=20, message="min 1 max 20"),
+    resultat_wtf = StringField("Insérer discipline tournoi ", validators=[Length(min=1, max=20, message="min 1 max 20"),
                                                                    Regexp(nom_genre_regexp,
                                                                           message="Pas de caractères "
                                                                                   "spéciaux, "
@@ -25,20 +25,14 @@ class FormWTFAjouterResultats(FlaskForm):
                                                                                   "apostrophe, de double trait union")
                                                                  ])
 
-    personne_wtf = StringField("Insérer le fk du membre ", validators=[Length(min=1, max=20, message="min 1 max 20"),
+    personne_wtf = StringField("Insérer nom tournoi", validators=[Length(min=1, max=20, message="min 1 max 20"),
                                                                    Regexp(nom_genre_regexp,
                                                                           message="Pas de caractères "
                                                                                   "spéciaux, "
                                                                                   "d'espace à double, de double "
                                                                                   "apostrophe, de double trait union")
                                                                  ])
-    tournoi_wtf = StringField("Insérer le fk du tournoi ", validators=[Length(min=1, max=20, message="min 1 max 20"),
-                                                                          Regexp(nom_genre_regexp,
-                                                                                 message="Pas de    caractères "
-                                                                                         "spéciaux, "
-                                                                                         "d'espace à double, de double "
-                                                                                         "apostrophe, de double trait union")
-                                                                          ])
+
     submit = SubmitField("Enregistrer resultats")
 
 
@@ -49,14 +43,14 @@ class FormWTFUpdateResultats(FlaskForm):
     """
     nom_resultats_update_regexp = ""
 
-    resultat_wtf_update = StringField("Insérer le résultats ", validators=[Length(min=1, max=20, message="min 1 max 20"),
+    resultat_wtf_update = StringField("Insérer le nom ", validators=[Length(min=1, max=20, message="min 1 max 20"),
                                                                     Regexp(nom_resultats_update_regexp,
                                                                            message="Pas de caractères "
                                                                                    "spéciaux, "
                                                                                    "d'espace à double, de double "
                                                                                    "apostrophe, de double trait union")
                                                                     ])
-    personne_wtf_update = StringField("Insérer le nom d'une personne ", validators=[Length(min=1, max=20, message="min 2 max 20"),
+    personne_wtf_update = StringField("Insérer la discipline ", validators=[Length(min=1, max=20, message="min 2 max 20"),
                                                                           Regexp(nom_resultats_update_regexp,
                                                                                  message="Pas de"
                                                                                          "caractères "
@@ -66,13 +60,7 @@ class FormWTFUpdateResultats(FlaskForm):
                                                                                          "union")
 
                                                                           ])
-    tournoi_wtf_update = StringField("Insérer le fk du tournoi ", validators=[Length(min=1, max=20, message="min 1 max 20"),
-                                                                       Regexp(nom_resultats_update_regexp,
-                                                                              message="Pas de    caractères "
-                                                                                      "spéciaux, "
-                                                                                      "d'espace à double, de double "
-                                                                                      "apostrophe, de double trait union")
-                                                                       ])
+
    ## date_genre_wtf_essai = DateField("Essai date", validators=[InputRequired("Date obligatoire"),
      ##                                                          DataRequired("Date non valide")])
     submit = SubmitField("Update personne")

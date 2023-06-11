@@ -36,10 +36,7 @@ def resultats_afficher(order_by, id_genre_sel):
         try:
             with DBconnection() as mc_afficher:
                 if order_by == "ASC" and id_genre_sel == 0:
-                    strsql_genres_afficher = """SELECT id_pers_participer_tournoi, nom_pers, resultat_tournoi, date_tournoi,nom_tournoi, discipline_tournoi  FROM t_personne p
-                                                INNER JOIN t_pers_participer_tournoi pt ON p.id_personne = pt.fk_personne
-                                                INNER JOIN t_tournoi t ON pt.fk_tournoi = t.id_tournoi
-                                                ORDER BY id_pers_participer_tournoi ASC"""
+                    strsql_genres_afficher = """SELECT * FROM t_tournoi ORDER BY id_tournoi ASC"""
                     mc_afficher.execute(strsql_genres_afficher)
                 elif order_by == "ASC":
                     # C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
@@ -48,16 +45,12 @@ def resultats_afficher(order_by, id_genre_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_id_genre_selected_dictionnaire = {"value_id_genre_selected": id_genre_sel}
-                    strsql_genres_afficher = """SELECT id_pers_participer_tournoi, nom_pers, resultat_tournoi, date_tournoi,nom_tournoi, discipline_tournoi  FROM t_personne p
-                                                INNER JOIN t_pers_participer_tournoi pt ON p.id_personne = pt.fk_personne
-                                                INNER JOIN t_tournoi t ON pt.fk_tournoi = t.id_tournoi  = %(value_id_genre_selected)s"""
+                    strsql_genres_afficher = """SELECT * FROM t_tournoi WHERE id_tournoi = %(value_id_genre_selected)s"""
 
                     mc_afficher.execute(strsql_genres_afficher, valeur_id_genre_selected_dictionnaire)
                 else:
-                    strsql_genres_afficher = """SELECT id_pers_participer_tournoi, nom_pers, resultat_tournoi, date_tournoi,nom_tournoi, discipline_tournoi  FROM t_personne p
-                                                INNER JOIN t_pers_participer_tournoi pt ON p.id_personne = pt.fk_personne
-                                                INNER JOIN t_tournoi t ON pt.fk_tournoi = t.id_tournoi
-                                                ORDER BY id_pers_participer_tournoi DESC """
+                    strsql_genres_afficher = """SELECT * FROM t_tournoi
+                                                ORDER BY id_tournoi DESC """
 
                     mc_afficher.execute(strsql_genres_afficher)
 
@@ -67,14 +60,14 @@ def resultats_afficher(order_by, id_genre_sel):
 
                 # Différencier les messages si la table est vide.
                 if not data_genres and id_genre_sel == 0:
-                    flash("""La table "t_genre" est vide. !!""", "warning")
+                    flash("""La table "t_tournoi" est vide. !!""", "warning")
                 elif not data_genres and id_genre_sel > 0:
                     # Si l'utilisateur change l'id_genre dans l'URL et que le genre n'existe pas,
-                    flash(f"Le genre demandé n'existe pas !!", "warning")
+                    flash(f"Le tournoi demandé n'existe pas !!", "warning")
                 else:
                     # Dans tous les autres cas, c'est que la table "t_genre" est vide.
                     # OM 2020.04.09 La ligne ci-dessous permet de donner un sentiment rassurant aux utilisateurs.
-                    flash(f"Membres des archers de la Saigne", "success")
+                    flash(f"tournois de la saison 2023", "success")
 
         except Exception as Exception_genres_afficher:
             raise ExceptionGenresAfficher(f"fichier : {Path(__file__).name}  ;  "
@@ -113,10 +106,8 @@ def resultats_ajouter_wtf():
             if form.validate_on_submit():
                 resultat_wtf = form.resultat_wtf.data
                 personne_wtf = form.personne_wtf.data
-                tournoi_wtf = form.tournoi_wtf.data
 
                 valeurs_insertion_dictionnaire = {
-                    "value_tournoi": tournoi_wtf,
                     "value_personne": personne_wtf,
                     "value_resultat": resultat_wtf
                 }
@@ -124,8 +115,8 @@ def resultats_ajouter_wtf():
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
                 strsql_insert_genre = """
-                INSERT INTO t_pers_participer_tournoi (fk_personne, fk_tournoi, resultat_tournoi) 
-                VALUES (%(value_personne)s, %(value_tournoi)s, %(value_resultat)s) """
+                INSERT INTO t_tournoi (nom_tournoi, discipline_tournoi) 
+                VALUES (%(value_personne)s, %(value_resultat)s) """
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(strsql_insert_genre, valeurs_insertion_dictionnaire)
 
@@ -178,7 +169,7 @@ def resultats_update_wtf():
             # Puis la convertir en lettres minuscules.
             personne_wtf_update = form_update.personne_wtf_update.data
             resultat_wtf_update = form_update.resultat_wtf_update.data
-            tournoi_wtf_update = form_update.resultat_wtf_update.data
+
 
             
 
@@ -187,14 +178,13 @@ def resultats_update_wtf():
 
             valeur_update_dictionnaire = {"value_id_resultats_update": id_resultats_update,
                                           "value_fk_personne": personne_wtf_update,
-                                          "value_resultat_personne": resultat_wtf_update,
-                                          "value_tournoi_personne": tournoi_wtf_update
+                                          "value_resultat_personne": resultat_wtf_update
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_intitulegenre = """UPDATE t_pers_participer_tournoi
-                                                SET fk_personne=%(value_fk_personne)s, fk_tournoi=%(value_tournoi_personne)s, resultat_tournoi=%(value_resultat_personne)s 
-                                                WHERE id_pers_participer_tournoi=%(value_id_resultats_update)s;"""
+            str_sql_update_intitulegenre = """UPDATE t_tournoi
+                                                SET nom_tournoi=%(value_resultat_personne)s, discipline_tournoi=%(value_fk_personne)s 
+                                                WHERE id_tournoi=%(value_id_resultats_update)s;"""
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
 
@@ -206,20 +196,20 @@ def resultats_update_wtf():
             return redirect(url_for('resultats_afficher', order_by="ASC", id_genre_sel=id_resultats_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "nom_pers" de la "t_genre"
-            str_sql_id_genre = "SELECT * FROM t_pers_participer_tournoi " \
-                               "WHERE id_pers_participer_tournoi = %(value_id_resultats_update)s"
+            str_sql_id_genre = "SELECT * FROM t_tournoi " \
+                               "WHERE id_tournoi = %(value_id_resultats_update)s"
             valeur_select_dictionnaire = {"value_id_resultats_update": id_resultats_update}
             with DBconnection() as mybd_conn:
                 mybd_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
             data_nom_genre = mybd_conn.fetchone()
             print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
-                  data_nom_genre["fk_personne"])
+                  data_nom_genre["nom_tournoi"])
 
             # Afficher la valeur sélectionnée dans les champs du formulaire "resultats_update_wtf.html"
-            form_update.personne_wtf_update.data = data_nom_genre["fk_personne"]
-            form_update.resultat_wtf_update.data = data_nom_genre["resultat_tournoi"]
-            form_update.tournoi_wtf_update.data = data_nom_genre["fk_tournoi"]
+            form_update.personne_wtf_update.data = data_nom_genre["discipline_tournoi"]
+            form_update.resultat_wtf_update.data = data_nom_genre["nom_tournoi"]
+
            ## form_update.date_genre_wtf_essai.data = data_nom_genre["date_ins_genre"]
 
     except Exception as Exception_genre_update_wtf:
@@ -245,9 +235,9 @@ def resultats_update_wtf():
 """
 
 
-@app.route("/genre_delete", methods=['GET', 'POST'])
+@app.route("/resultats_delete", methods=['GET', 'POST'])
 def resultats_delete_wtf():
-    data_films_attribue_genre_delete = None
+    data_films_attribue_resultats_delete = None
     btn_submit_del = None
     # L'utilisateur vient de cliquer sur le bouton "DELETE". Récupère la valeur de "id_genre"
     id_resultats_delete = request.values['id_resultats_btn_delete_html']
@@ -264,8 +254,8 @@ def resultats_delete_wtf():
             if form_delete.submit_btn_conf_del.data:
                 # Récupère les données afin d'afficher à nouveau
                 # le formulaire "genres/resultats_delete_wtf.html" lorsque le bouton "Etes-vous sur d'effacer ?" est cliqué.
-                data_films_attribue_genre_delete = session['data_films_attribue_genre_delete']
-                print("data_films_attribue_genre_delete ", data_films_attribue_genre_delete)
+                data_films_attribue_resultats_delete = session['data_films_attribue_resultats_delete']
+                print("data_films_attribue_resultats_delete ", data_films_attribue_resultats_delete)
 
                 flash(f"Effacer le genre de façon définitive de la BD !!!", "danger")
                 # L'utilisateur vient de cliquer sur le bouton de confirmation pour effacer...
@@ -273,11 +263,11 @@ def resultats_delete_wtf():
                 btn_submit_del = True
 
             if form_delete.submit_btn_del.data:
-                valeur_delete_dictionnaire = {"value_id_genre": id_resultats_delete}
+                valeur_delete_dictionnaire = {"value_id_resultats": id_resultats_delete}
                 print("valeur_delete_dictionnaire ", valeur_delete_dictionnaire)
 
-                str_sql_delete_films_genre = """DELETE FROM t_pers_participer_tournoi WHERE fk_personne = %(value_id_genre)s"""
-                str_sql_delete_idgenre = """DELETE FROM t_pers_participer_tournoi WHERE id_pers_participer_tournoi = %(value_id_genre)s"""
+                str_sql_delete_films_genre = """DELETE FROM t_pers_participer_tournoi WHERE fk_tournoi = %(value_id_resultats)s"""
+                str_sql_delete_idgenre = """DELETE FROM t_tournoi WHERE id_tournoi = %(value_id_resultats)s"""
                 # Manière brutale d'effacer d'abord la "fk_genre", même si elle n'existe pas dans la "t_genre_film"
                 # Ensuite on peut effacer le genre vu qu'il n'est plus "lié" (INNODB) dans la "t_genre_film"
                 with DBconnection() as mconn_bd:
@@ -295,23 +285,21 @@ def resultats_delete_wtf():
             print(id_resultats_delete, type(id_resultats_delete))
 
             # Requête qui affiche tous les films_genres qui ont le genre que l'utilisateur veut effacer
-            str_sql_genres_films_delete = """SELECT id_personne, nom_pers, prenom_pers, mail_contact, telephone_contact, resultat_tournoi, nom_tournoi, date_tournoi FROM t_personne p
-                                            INNER JOIN t_pers_avoir_contact c ON p.id_personne = c.fk_personne
-                                            INNER JOIN t_contact ct ON c.fk_contact = ct.id_contact
-                                            INNER JOIN t_pers_participer_tournoi pt ON p.id_personne = pt.fk_personne
-                                            INNER JOIN t_tournoi t ON pt.fk_tournoi = t.id_tournoi = %(value_id_genre)s"""
+            str_sql_genres_films_delete = """SELECT * FROM t_tournoi p
+                                            INNER JOIN t_pers_participer_tournoi c ON p.id_tournoi = c.fk_tournoi
+                                            WHERE fk_tournoi = %(value_id_genre)s"""
 
             with DBconnection() as mydb_conn:
                 mydb_conn.execute(str_sql_genres_films_delete, valeur_select_dictionnaire)
-                data_films_attribue_genre_delete = mydb_conn.fetchall()
-                print("data_films_attribue_genre_delete...", data_films_attribue_genre_delete)
+                data_films_attribue_resultats_delete = mydb_conn.fetchall()
+                print("data_films_attribue_resultats_delete...", data_films_attribue_resultats_delete)
 
                 # Nécessaire pour mémoriser les données afin d'afficher à nouveau
                 # le formulaire "genres/resultats_delete_wtf.html" lorsque le bouton "Etes-vous sur d'effacer ?" est cliqué.
-                session['data_films_attribue_genre_delete'] = data_films_attribue_genre_delete
+                session['data_films_attribue_resultats_delete'] = data_films_attribue_resultats_delete
 
                 # Opération sur la BD pour récupérer "id_genre" et "nom_pers" de la "t_genre"
-                str_sql_id_genre = "SELECT id_personne, nom_pers FROM t_personne WHERE id_personne = %(value_id_genre)s"
+                str_sql_id_genre = "SELECT id_tournoi, nom_tournoi FROM t_tournoi WHERE id_tournoi = %(value_id_genre)s"
 
                 mydb_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
                 # Une seule valeur est suffisante "fetchone()",
@@ -321,7 +309,7 @@ def resultats_delete_wtf():
                       data_nom_genre["nom_pers"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "resultats_delete_wtf.html"
-            form_delete.nom_genre_delete_wtf.data = data_nom_genre["nom_pers"]
+            form_delete.nom_resultats_delete_wtf.data = data_nom_genre["nom_tournoi"]
 
             # Le bouton pour l'action "DELETE" dans le form. "resultats_delete_wtf.html" est caché.
             btn_submit_del = False
@@ -334,4 +322,4 @@ def resultats_delete_wtf():
     return render_template("resultats/resultats_delete_wtf.html",
                            form_delete=form_delete,
                            btn_submit_del=btn_submit_del,
-                           data_films_associes=data_films_attribue_genre_delete)
+                           data_films_associes=data_films_attribue_resultats_delete)

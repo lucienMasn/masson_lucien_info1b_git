@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12">
             <p>
-                Ajouter un nouveau résultat (WTForms)
+                Ajouter un nouveau tournoi (WTForms)
             </p>
             <form action="" method="POST" novalidate>
                 <!-- Protection contre les attaques Cross-Site Request Forgery (CSRF) -->
@@ -20,13 +20,6 @@
                     </p>
                 </div>
                 <div class="form-group">
-                    <p>
-                        {{ form.tournoi_wtf.label }}<br>
-                        {{ form.tournoi_wtf(size=32) }}<br>
-                        {% for error in form.tournoi_wtf.errors %}
-                            <span style="color: red;">[{{ error }}]</span>
-                        {% endfor %}
-                    </p>
                 </div>
                 <div class="form-group">
                     <p>
